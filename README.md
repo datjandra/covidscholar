@@ -24,7 +24,7 @@ Communication during a crisis is critical for keeping people and organizations i
 
 ### How can technology help?
 
-A smart crisis communication Chatbot can help with important questions that have almost unique well-defined answers. It can also provide access to a credible knowledge base collection from which AI systems can draw answers and could learn from the overall Q&A process. However, a Chatbot interface is not suitable for follow-up in-depth research. Furthermore,  training a chatbot may be biassed by the programmer's own way of posing questions.
+A smart crisis communication Chatbot can help with important questions that have almost unique well-defined answers. It can also provide access to a credible knowledge base collection from which AI systems can draw answers and could learn from the overall Q&A process. However, a Chatbot interface is not suitable for follow-up in-depth refining search. Furthermore, training a chatbot may be biassed by the programmer's own way of posing questions.
 
 ### The idea
 
