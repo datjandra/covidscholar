@@ -32,7 +32,7 @@ Utilizing a web-page interface to answer COVID-19 related questions by experts a
 
 ## Demo video
 
-[![Watch the video](https://www.youtube.com/watch?v=E4vbUMMKdAY)
+[![Watch the video](https://i9.ytimg.com/vi/E4vbUMMKdAY/mq2.jpg?sqp=CKzTnfUF&rs=AOn4CLCbM0ZaxGObWsB9X0gdaaCX6dFEoA)](https://www.youtube.com/watch?v=E4vbUMMKdAY&t=9s)
 
 ## The architecture
 
