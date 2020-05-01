@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>CovidScholar</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+ <script src=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+  <style>
+    body {
+        padding-top: 55px;
+    }
+  
+    .white-background {
+        background-color: #fff !important;
+    }
+  
+    .navbar-light .navbar-brand {
+        color: #5375EF;
+    }
+    
+    .navbar-light .nav-item .nav-link {
+        color: #5375EF;
+    }
+    
+    .btn-outline-primary.override {
+        color: #5375EF;
+        border-color: #5375EF;
+    }
+    
+    .btn-primary.override {
+        background-color: #5375EF;
+    }
+    
+    .search-panel {
+        background-color: #fff;
+    }
+    
+    .search-section {
+        background-color: #4966B0;
+        border-radius: 0;
+        margin-bottom: 0;
+    }
+    
+    .search-button {
+        background-color: #5375EF;
+        color: #fff;
+    }
+    
+    .sidebar {
+        background-color: #5375EF;
+        color: #fff;
+        padding-right: 20px;
+        min-height: calc(100vh - 50px);
+    }
+
+    .sidebar .sidebar-header {
+        padding: 20px;
+        overflow: hidden;
+    }   
+    
+    .nav-sidebar {
+        list-style: none;
+        padding: 0;
+        margin: 0
+    }
+    
+    .nav-sidebar .sidebar-menu {
+        padding-bottom: 10px;
+    }
+
+    .nav-sidebar .sidebar-menu a {
+        display: inline-block;
+        width: 100%;
+        text-decoration: none;
+        position: relative;
+        padding: 8px 30px 8px 20px;
+        color: #fff;
+    }
+
+    .nav-sidebar li a span.badge {
+        float: right;
+        margin-top: 8px;
+        margin-left: 5px;
+        background: #FFFFFF;
+        font-family: Roboto;
+        color: rgba(46, 41, 61, 0.8);
+    }
+    
+    .filter-col {
+        background-color: #DCE4FF; 
+        color: rgba(46, 41, 61, 0.7);
+        font-family: Manrope;
+        font-style: normal;
+    }
+    
+    .filter-section {
+        margin-top: 20px;
+    }
+    
+    .filter-label {
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 25px;
+    }
+    
+    .filter-help {
+        color: rgba(46, 41, 61, 0.7);
+    }
+    
+    .filter-input {
+        padding-top: 40px;
+    }
+    
+    .filter-box {
+        padding-top: 40px;
+    }
+    
+    .filter-item {
+        background: #5375EF;
+        border-radius: 6px;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 12px;
+        line-height: 16px;
+        color: #FFFFFF;
+        flex: none;
+        order: 1;
+        align-self: center;
+        margin: 8px 0px;
+        cursor: pointer;
+    }
+    
+    .results-col {
+        background-color: #93B1EB;
+        color: #fff;
+    }
+    
+    .results-section {
+        margin-top: 20px;
+    }
+    
+    .results-label {
+        font-family: Manrope;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 25px;
+    }
+    
+    .results-list {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        margin-top: 20px;
+    }
+    
+    .results-item {
+        box-shadow: 0px 12px 24px rgba(73, 102, 176, 0.15), 0px 4px 4px rgba(73, 102, 176, 0.2);
+        border-radius: 12px;
+        margin: 16px 0;
+    }
+    
+    .results-item .card-header {
+        background-color: #fff;
+        border-bottom: 0;
+    }
+    
+    .results-item .label {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 16px;
+        align-items: center;
+        text-align: center;
+        color: #5375EF;
+    }
+    
+    .results-item .title {
+        font-family: Manrope;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
+        color: #5375EF;
+    }
+    
+    .results-item .excerpt  {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;    
+        line-height: 24px;
+        color: rgba(46, 41, 61, 0.7);
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-sm navbar-light fixed-top bg-light white-background">
+<a class="navbar-brand" href="#">CovidScholar</a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarCollapse">
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+      <a class="nav-link" href="#">How to use</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Methodology</a>
+    </li>
+  </ul>
+  
+  <button class="btn btn-outline-primary override mx-2">Feedback</button>
+  
+  <button class="btn btn-primary override mx-2">Export</button>
+</div>
+</nav>
+
+<div class="jumbotron text-center search-section">
+    <div class="input-group">
+        <div class="input-group-btn search-panel">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span id="search_concept">Collection</span> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li>bioRxiv</li>
+              <li>News</li>
+            </ul>
+        </div>
+            
+        <input class="form-control py-2 border-right-0 border" type="search" placeholder="Enter natural language query" id="search-input">
+        <span class="input-group-append">
+            <button class="btn btn-outline-secondary border-left-0 border search-button" type="button">
+                <i class="fa fa-search"></i>
+            </button>
+        </span>
+    </div>
+    <div id="search-loader" class="d-none" ><img src="https://marketengine.parts/covid/ajax-loader-facebook.gif"></img></div>
+</div>
+
+<div class="container-fluid">
+    
+    <div class="row" >
+        <div class="col-sm-3 col-md-2 sidebar">
+            <div class="sidebar-header">
+            Refine the Search
+            </div>
+            <ul class="nav nav-sidebar d-inline">
+                <li class="sidebar-menu">
+                    <a href="#">
+                        <span>Concepts</span>
+                        <span class="badge">3</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu">
+                    <a href="#">
+                        <span>Entities</span>
+                        <span class="badge">3</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-md-10 px-0">
+            <div class="container-fluid h-100">
+                <div class="row h-100">
+                    <div class="col-md-4 filter-col">
+                        <div class="filter-section">
+                            <span class="filter-label">Entities</span>
+                            <span class="ml-2"><a href="#">
+                                <i class="fa fa-question-circle filter-help"></i>
+                            </a></span>
+                            <span class="float-right"><a href="#">Clear All</a></span>
+                            
+                            <div class="input-group filter-input">
+                                <input class="form-control py-2 border-right-0 border" type="search" placeholder="Enter concept search terms">
+                                <span class="input-group-append">
+                                    <button class="btn btn-outline-secondary border-left-0 border search-button" type="button">
+                                        <i class="fa fa-plus"></i>
+                                
+                                    </button>
+                                </span>
+                            </div>
+                            
+                            <div class="filter-box">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <span class="badge
+                                       filter-item">World Health Organization
+                                        &nbsp;
+                                        33454 
+                                        &nbsp;&#10006;</span>
+                                        
+                                        <span class="badge filter-item">Epidemiology
+                                        &nbsp;
+                                        111160 
+                                        &nbsp;&#10006;</span>
+                                        
+                                        <span class="badge filter-item">Severe acute respiratory syndro...
+                                        &nbsp;
+                                        332560 
+                                        &nbsp;&#10006;</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-8 results-col">
+                        <div class="results-section">
+                            <div class="results-label">Results
+                            </div>
+                            <ul class="results-list">
+                                <li>
+                                    <div class="card results-item">
+                                        <div class="card-header">
+                                        <span class="label"><a href="#">Metadata</a></span>
+                                        <span class="label ml-4"><a href="#">Similarity</a></span>
+                                        </div>
+                                        
+                                        <div class="card-body">
+                                            <a href="#" class="title">Predictions, role of interventions and effects of a historic national lockdown in India's response to the COVID-19 pandemic: data science call to arms</a>
+                                            <p class="excerpt">Importance: India has taken strong and early public health measures for arresting the spread of the COVID-19 epidemic. With only 536 COVID-19 cases and 11 fatalities, India - a democracy of 1.34 billion people - took the historic decision of a 21-day national lockdown on March 25...</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                                <li>
+                                    <div class="card results-item">
+                                        <div class="card-header">
+                                        <span class="label"><a href="#">Metadata</a></span>
+                                        <span class="label ml-4"><a href="#">Similarity</a></span>
+                                        </div>
+                                        
+                                        <div class="card-body">
+                                            <a href="#" class="title">Will COVID-19 pandemic diminish by summer-monsoon in India? Lesson from the first lockdown</a>
+                                            <p class="excerpt">However, the role of temperature, humidity, and absolute humidity in the transmission of COVID-19 has not yet been well established. Therefore the study to investigate the meteorological condition for incidence and spread of COVID-19 infection, to predict..</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                                <li>
+                                    <div class="card results-item">
+                                        <div class="card-header">
+                                        <span class="label"><a href="#">Metadata</a></span>
+                                        <span class="label ml-4"><a href="#">Similarity</a></span>
+                                        </div>
+                                        
+                                        <div class="card-body">
+                                            <a href="#" class="title">A novel high specificity COVID-19 screening method based on simple blood exams and artificial intelligence</a>
+                                            <p class="excerpt">Despite governmental initiatives aimed at containing the spread of the disease, several countries are experiencing unmanageable increases in the demand for ICU beds, medical equipment, and larger testing capacity. Efficient COVID-19 diagnosis enables healthcare systems to provide better care for patients while protecting caregivers from the disease...</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<script>
+$(".search-button").click(function() {  
+    $("#search-loader").removeClass('d-none');  
+    var query = $("#search-input").val();
+    var filter = null;
+    var similarity = null;
+    $.ajax({
+        url: 'https://marketengine.parts/covid/biorxiv.php',
+        method: 'GET',
+        data: {
+          q: query,
+          filter: filter,
+          similar: similarity
+        },
+        dataType: "json",
+        timeout: 30000
+    }).done(function(response) {
+        if (response.results) {
+            var resultsList = $('.results-list');
+            resultsList.empty();
+            var results = response.results;
+            for (var i=0; i<results.length; i++) {
+                result = results[i];
+                listItem = $('<li>').appendTo(resultsList);
+                
+                resultsItem = $('<div>', {
+                    'class': 'card results-item'
+                }).appendTo(listItem);
+                
+                cardHeader = $('<div>', {
+                    'class': 'card-header'
+                }).appendTo(resultsItem);
+                
+                cardHeader.append('<span class="label"><a href="#">Metadata</a></span>');
+                
+                cardHeader.append('<span class="label ml-4"><a href="#">Similarity</a></span>');
+                
+                cardBody = $('<div>', {
+                    'class': 'card-body'
+                }).appendTo(resultsItem);
+                
+                cardBody.append('<a href="' + result.link + '" class="title" target="_blank">' + result.title + '</a>');
+                
+                cardBody.append('<p class="excerpt">' + result.text + '</p>');
+            }
+        }
+    }).always(function() {
+        $('#search-loader').addClass('d-none');
+    });
+});
+</script>
+
+</body>
+</html>
