@@ -11,12 +11,12 @@ with urllib.request.urlopen(url) as response:
       break
 
     doc = {
-      'authors': paper['rel_authors'],
-      'link': paper['rel_link'],
+      'author': paper['rel_authors'],
+      'url': paper['rel_link'],
       'doi': paper['rel_doi'],
       'title': paper['rel_title'],
-      'abstract': paper['rel_abs'],
-      'date': paper['rel_date'],
+      'text': paper['rel_abs'],
+      'publication_date': paper['rel_date'],
       'site': paper['rel_site']
     }
     
