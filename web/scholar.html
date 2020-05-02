@@ -256,7 +256,7 @@
                 <li class="sidebar-menu">
                     <a href="#">
                         <span>Concepts</span>
-                        <span class="badge">3</span>
+                        <span class="badge" id="enriched_text_concepts_text_counter">3</span>
                     </a>
                 </li>
                 <li class="sidebar-menu">
@@ -279,18 +279,21 @@
                             <span class="float-right"><a href="#">Clear All</a></span>
                             
                             <div class="input-group filter-input">
-                                <input class="form-control py-2 border-right-0 border" type="search" placeholder="Enter concept search terms">
+                                <input id="enriched_text_concepts_text_filter" class="form-control py-2 border-right-0 border" type="search" placeholder="Enter concept search terms">
+                                <!-- Don't know what plus button is for -->
+                                <!--
                                 <span class="input-group-append">
                                     <button class="btn btn-outline-secondary border-left-0 border search-button" type="button">
                                         <i class="fa fa-plus"></i>
                                 
                                     </button>
                                 </span>
+                                -->
                             </div>
                             
                             <div class="filter-box">
                                 <div class="card">
-                                    <div class="card-body">
+                                    <div id="enriched_text_concepts_text_container" class="card-body">
                                         <span class="badge
                                        filter-item">World Health Organization
                                         &nbsp;
@@ -370,13 +373,85 @@
 </div>
 
 <script>
-$(".search-button").click(function() {  
-    $("#search-loader").removeClass('d-none');  
+var appendText = function(filter, text) {
+    val = filter.val();
+    if (val) {
+        tokens = val.split(',');
+        if (!tokens.includes(text)) {
+            tokens.push(text);
+        }
+        filter.val(tokens.join(','));
+    } else {
+        filter.val(text);
+    }
+};
+
+var addBadge = function(container, label, filter, text) {
+    $('<span>', {
+        class: 'badge filter-item mx-2 clickable field',
+        text: label,
+        click: function() {
+            appendText(filter, text);
+        }
+    }).appendTo(container);
+};
+
+var showAggregations = function(aggregations) {
+    if (aggregations) {
+        for (var i=0; i<aggregations.length; i++) {
+            aggregation = aggregations[i];
+            var id = aggregation.field;
+            id = id.replace(/\./g, '_');
+            
+            container = $('#' + id + '_container');
+            if (!container) {
+              continue;
+            }
+            container.empty();
+            
+            filter = $('#' + id + '_filter');
+            if (!filter) {
+              continue;
+            }
+            
+            counter = $('#' + id + '_counter');
+            if (!counter) {
+              continue;
+            }
+            totalResults = 0;
+            
+            results = aggregation.results;
+            for (var j=0; j<results.length; j++) {
+                var result = results[j];
+                result.key;
+                totalResults = totalResults + result.matching_results;
+                
+                label = result.key + ' (' + result.matching_results + ')';
+                addBadge(container, label, filter, result.key);
+            }
+            counter.text(totalResults);
+        }
+    
+                
+    }
+};
+
+var search = function(caller, endpoint, filterOperator) {
+    $("#search-loader").removeClass('d-none');
+    var filterArray = [];
+    var conceptsFilter = $('#enriched_text_concepts_text_filter').val();
+    if (conceptsFilter) {
+        filterArray.push("enriched_text.concepts.text:" + conceptsFilter);
+    }
+    var filter = "";
+    if (filterArray.length > 0) {
+        filter = filterArray.join(filterOperator);
+    }
+    
     var query = $("#search-input").val();
-    var filter = null;
     var similarity = null;
     $.ajax({
-        url: 'https://marketengine.parts/covid/biorxiv.php',
+        url: endpoint,
         method: 'GET',
         data: {
           q: query,
@@ -415,9 +490,15 @@ $(".search-button").click(function() {
                 cardBody.append('<p class="excerpt">' + result.text + '</p>');
             }
         }
+        
+        showAggregations(response.aggregations);
     }).always(function() {
         $('#search-loader').addClass('d-none');
     });
+};
+
+$(".search-button").click(function() {  
+    search($(this), 'https://marketengine.parts/covid/biorxiv.php', ',');
 });
 </script>
 
