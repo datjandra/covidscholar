@@ -69,7 +69,7 @@
     }
     
     .nav-sidebar .sidebar-menu {
-        padding-bottom: 10px;
+        margin-bottom: 10px;
     }
 
     .nav-sidebar .sidebar-menu a {
@@ -88,6 +88,19 @@
         background: #FFFFFF;
         font-family: Roboto;
         color: rgba(46, 41, 61, 0.8);
+    }
+    
+    .nav-sidebar li.active {
+        background-color: #DCE4FF;
+    }
+    
+    .nav-sidebar li.active span {
+        color: #5375EF;
+    }
+    
+    .nav-sidebar li.active a span.badge {
+        background-color: #5375EF;
+        color: #fff;
     }
     
     .filter-col {
@@ -117,6 +130,23 @@
     
     .filter-box {
         padding-top: 40px;
+    }
+    
+    .filter-button {
+        background-color: #5375EF;
+        color: #fff;
+    }
+    
+    .filter-label {
+        padding-top: 40px;
+    }
+    
+    .filter-card {
+        background-color: rgba(255, 255, 255, 0.8);
+        border: 1px dashed rgba(100, 100, 100, 0.5);
+        border-radius: 12px;
+        min-height: 204px;
+        overflow: hidden;
     }
     
     .filter-item {
@@ -254,21 +284,21 @@
 <div class="container-fluid">
     
     <div class="row" >
-        <div class="col-sm-3 col-md-2 sidebar">
+        <div class="col-sm-3 col-md-2 sidebar px-0">
             <div class="sidebar-header">
             Refine the Search
             </div>
             <ul class="nav nav-sidebar d-inline">
                 <li class="sidebar-menu">
-                    <a href="#" id="concepts_link">
+                    <a class="clearfix" href="#" id="concepts_link">
                         <span>Concepts</span>
-                        <span class="badge" id="enriched_text_concepts_text_counter">3</span>
+                        <span class="badge float-right my-1" id="enriched_text_concepts_text_counter">3</span>
                     </a>
                 </li>
                 <li class="sidebar-menu">
-                    <a href="#" id="entities_link">
+                    <a class="clearfix" href="#" id="entities_link">
                         <span>Entities</span>
-                        <span class="badge">3</span>
+                        <span class="badge float-right my-1" id="enriched_text_entities_text_counter">3</span>
                     </a>
                 </li>
             </ul>
@@ -282,23 +312,23 @@
                             <span class="ml-2"><a href="#">
                                 <i class="fa fa-question-circle filter-help"></i>
                             </a></span>
-                            <span class="float-right"><a href="#">Clear All</a></span>
+                            <span class="float-right">
+                                <a onclick="clearContainer('enriched_text_concepts_text_container')"  
+                                    href="#">Clear All</a>
+                            </span>
                             
                             <div class="input-group filter-input">
                                 <input id="enriched_text_concepts_text_filter" class="form-control py-2 border-right-0 border" type="search" placeholder="Enter concept search terms">
-                                <!-- Don't know what plus button is for -->
-                                <!--
+
                                 <span class="input-group-append">
-                                    <button class="btn btn-outline-secondary border-left-0 border search-button" type="button">
+                                    <button id="enriched_text_concepts_text_append" class="btn btn-outline-secondary border-left-0 border filter-button" type="button">
                                         <i class="fa fa-plus"></i>
-                                
                                     </button>
                                 </span>
-                                -->
                             </div>
                             
                             <div class="filter-box">
-                                <div class="card">
+                                <div class="card filter-card">
                                     <div id="enriched_text_concepts_text_container" class="card-body">
                                         <span class="badge
                                        filter-item">World Health Organization
@@ -318,29 +348,51 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            <div class="filter-label filter-heading">Aggregate concepts</div>
+                            
+                            <div id="enriched_text_concepts_text_aggregate">
+                                <span class="badge
+                                       filter-item">World Health Organization
+                                        &nbsp;
+                                        33454 
+                                        &nbsp;&#10006;</span>
+                                        
+                                <span class="badge filter-item">Epidemiology
+                                        &nbsp;
+                                        111160 
+                                        &nbsp;&#10006;</span>
+                                        
+                                <span class="badge filter-item">Severe acute respiratory syndro...
+                                &nbsp;
+                                332560 
+                                &nbsp;&#10006;</span>
+                            </div>    
                         </div>
+                        
                         <div class="filter-section" id="entities_section">
                             <span class="filter-label">Entities</span>
                             <span class="ml-2"><a href="#">
                                 <i class="fa fa-question-circle filter-help"></i>
                             </a></span>
-                            <span class="float-right"><a href="#">Clear All</a></span>
+                            <span class="float-right">
+                                <a onclick="clearContainer('enriched_text_entities_text_container')" 
+                                href="#">Clear All</a>
+                            </span>
                             
                             <div class="input-group filter-input">
                                 <input id="enriched_text_entities_text_filter" class="form-control py-2 border-right-0 border" type="search" placeholder="Enter entity search terms">
-                                <!-- Don't know what plus button is for -->
-                                <!--
+                                
                                 <span class="input-group-append">
-                                    <button class="btn btn-outline-secondary border-left-0 border search-button" type="button">
+                                    <button id="enriched_text_entities_text_append" class="btn btn-outline-secondary border-left-0 border filter-button" type="button">
                                         <i class="fa fa-plus"></i>
                                 
                                     </button>
                                 </span>
-                                -->
                             </div>
                             
                             <div class="filter-box">
-                                <div class="card">
+                                <div class="card filter-card">
                                     <div id="enriched_text_entities_text_container" class="card-body">
                                         <span class="badge
                                        filter-item">World Health Organization
@@ -360,6 +412,27 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            <div class="filter-label filter-heading">Aggregate entities</div>
+                            
+                            <div id="enriched_text_entities_text_aggregate">
+                                <span class="badge
+                                       filter-item">WHO
+                                        &nbsp;
+                                        33454 
+                                        &nbsp;&#10006;</span>
+                                        
+                                <span class="badge filter-item">COVID-19
+                                        &nbsp;
+                                        111160 
+                                        &nbsp;&#10006;</span>
+                                        
+                                <span class="badge filter-item">novel coronavirus
+                                &nbsp;
+                                332560 
+                                &nbsp;&#10006;</span>
+                            </div>
+                            
                         </div>
                     </div>
                     <div class="col-md-8 results-col">
@@ -420,6 +493,12 @@
 </div>
 
 <script>
+$('.nav li').click(function () {
+    var menuItem = $(this);
+    menuItem.siblings().removeClass('active');
+    menuItem.toggleClass('active');
+});
+
 var selectedCollection = 'bioRxiv';
 
 var collections = {
@@ -430,28 +509,46 @@ var collections = {
 $('#entities_section').hide();
 $('#concepts_section').show();
 
-var appendText = function(filter, text) {
-    val = filter.val();
-    if (val) {
-        tokens = val.split(',');
-        if (!tokens.includes(text)) {
-            tokens.push(text);
-        }
-        filter.val(tokens.join(','));
-    } else {
-        filter.val(text);
-    }
+var clearContainer = function(containerName) {
+    $('#' + containerName).empty();
 };
 
-var addBadge = function(container, label, filter, text) {
+var appendText = function(container, text) {
+    if (container.find("span:contains('" + text + "')").length) {
+        return;
+    }
+
+    var badge = $('<span>', {
+        class: 'badge filter-item mx-2 clickable field',
+        text: text
+    }).appendTo(container);
+    
+    badge.click(function() {
+        badge.remove();
+    });
+};
+
+var addBadge = function(aggregate, label, container, text) {
     $('<span>', {
         class: 'badge filter-item mx-2 clickable field',
         text: label,
         click: function() {
-            appendText(filter, text);
+            appendText(container, text);
         }
-    }).appendTo(container);
+    }).appendTo(aggregate);
 };
+
+$('#enriched_text_concepts_text_append').click(function(e) {
+    container = $('#enriched_text_concepts_text_container');
+    text = $('#enriched_text_concepts_text_filter').val();
+    appendText(container, text);
+});
+
+$('#enriched_text_entities_text_append').click(function(e) {
+    container = $('#enriched_text_entities_text_container');
+    text = $('#enriched_text_entities_text_filter').val();
+    appendText(container, text);
+});
 
 var showAggregations = function(aggregations) {
     if (aggregations) {
@@ -477,6 +574,12 @@ var showAggregations = function(aggregations) {
             }
             totalResults = 0;
             
+            aggregate = $('#' + id + '_aggregate');
+            if (!aggregate) {
+              continue;
+            }
+            aggregate.empty();
+            
             results = aggregation.results;
             for (var j=0; j<results.length; j++) {
                 var result = results[j];
@@ -484,7 +587,7 @@ var showAggregations = function(aggregations) {
                 totalResults = totalResults + result.matching_results;
                 
                 label = result.key + ' (' + result.matching_results + ')';
-                addBadge(container, label, filter, result.key);
+                addBadge(aggregate, label, container, result.key);
             }
             counter.text(totalResults);
         }
@@ -496,10 +599,24 @@ var showAggregations = function(aggregations) {
 var search = function(caller, endpoint, filterOperator) {
     $("#search-loader").removeClass('d-none');
     var filterArray = [];
-    var conceptsFilter = $('#enriched_text_concepts_text_filter').val();
-    if (conceptsFilter) {
-        filterArray.push("enriched_text.concepts.text:" + conceptsFilter);
+    var conceptArray = [];
+    $('#enriched_text_concepts_text_container').find('span.badge.filter-item').each(function() {
+        conceptArray.push($(this).text());
+    });
+    
+    if (conceptArray.length > 0){
+        filterArray.push("enriched_text.concepts.text:" + conceptArray.join(filterOperator));
     }
+    
+    var entitiesArray = [];
+    $('#enriched_text_entities_text_container').find('span.badge.filter-item').each(function() {
+        entitiesArray.push($(this).text());
+    });
+    
+    if (entitiesArray.length > 0){
+        filterArray.push("enriched_text.entities.text:" + entitiesArray.join(filterOperator));
+    }
+    
     var filter = "";
     if (filterArray.length > 0) {
         filter = filterArray.join(filterOperator);
