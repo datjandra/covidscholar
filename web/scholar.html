@@ -306,7 +306,7 @@
         <div class="col-sm-9 col-md-10 px-0">
             <div class="container-fluid h-100">
                 <div class="row h-100">
-                    <div class="col-md-4 filter-col">
+                    <div class="col-md-4 filter-col d-none">
                         <div class="filter-section" id="concepts_section">
                             <span class="filter-label">Concepts</span>
                             <span class="ml-2"><a href="#">
@@ -493,10 +493,29 @@
 </div>
 
 <script>
+var showFilters = function(show) {
+    if (show) {
+        $('.results-col').removeClass('col-md-12');
+        $('.results-col').addClass('col-md-8');
+        $('.filter-col').removeClass('d-none');
+    } else {
+        $('.results-col').removeClass('col-md-8');
+        $('.results-col').addClass('col-md-12');
+        $('.filter-col').addClass('d-none');
+    }
+};
+showFilters(false);
+
 $('.nav li').click(function () {
     var menuItem = $(this);
     menuItem.siblings().removeClass('active');
     menuItem.toggleClass('active');
+    
+    if (menuItem.hasClass('active')) {
+        showFilters(true);
+    } else {
+        showFilters(false);
+    }
 });
 
 var selectedCollection = 'bioRxiv';
@@ -550,6 +569,11 @@ $('#enriched_text_entities_text_append').click(function(e) {
     appendText(container, text);
 });
 
+var hasLetters = function(str) {
+  var regex = /[A-Za-z]+/g;
+  return regex.test(str);
+};
+
 var showAggregations = function(aggregations) {
     if (aggregations) {
         for (var i=0; i<aggregations.length; i++) {
@@ -583,7 +607,10 @@ var showAggregations = function(aggregations) {
             results = aggregation.results;
             for (var j=0; j<results.length; j++) {
                 var result = results[j];
-                result.key;
+                if (!hasLetters(result.key)) {
+                    continue;
+                }
+                
                 totalResults = totalResults + result.matching_results;
                 
                 label = result.key + ' (' + result.matching_results + ')';
