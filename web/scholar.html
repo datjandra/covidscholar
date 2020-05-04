@@ -35,10 +35,26 @@
         background-color: #5375EF;
     }
     
-    .search-panel {
+    .select-collection {
         background-color: #fff;
+        border-top-left-radius: .25rem;
+        border-bottom-left-radius: .25rem;
+    }
+
+    .dropdown-toggle {
+        width: 194px;
+        text-align: left;
+    }
+
+    .dropdown-toggle::after {
+        float: right;
+        margin-top: 10px;
     }
     
+    .dropdown-menu {
+        padding: 0.375rem 0.75rem;
+    }
+
     .search-section {
         background-color: #4966B0;
         border-radius: 0;
@@ -191,7 +207,6 @@
     
     .results-item {
         box-shadow: 0px 12px 24px rgba(73, 102, 176, 0.15), 0px 4px 4px rgba(73, 102, 176, 0.2);
-        border-radius: 12px;
         margin: 16px 0;
     }
     
@@ -261,9 +276,9 @@
 
 <div class="jumbotron text-center search-section">
     <div class="input-group">
-        <div class="input-group-btn search-panel">
+        <div class="input-group-btn select-collection">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                <span id="search_concept">Collection</span> <span class="caret"></span>
+                <span id="search_concept">Select a Collection</span> <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
               <li>bioRxiv</li>
@@ -719,7 +734,7 @@ $("#entities_link").click(function() {
     $('#concepts_section').hide();
 });
 
-$(".search-panel .dropdown-menu li").on("click", function(event){
+$(".select-collection .dropdown-menu li").on("click", function(event){
     selectedCollection = $(event.target).text();
     $('#search_concept').text(selectedCollection);
 });
@@ -727,3 +742,4 @@ $(".search-panel .dropdown-menu li").on("click", function(event){
 
 </body>
 </html>
+
