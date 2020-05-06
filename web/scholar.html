@@ -8,7 +8,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
- <script src=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+  <script src=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
   <style>
     body {
         padding-top: 55px;
@@ -252,6 +253,14 @@
     
     #enrichments-modal .modal-body {
         background-color: #DCE4FF;
+    }
+
+    .loadingoverlay {
+        justify-content: flex-start !important;
+    }
+
+    .loadingoverlay_element {
+        margin-top: 200px   !important;
     }
   </style>
 </head>
@@ -791,6 +800,8 @@ var addEnrichments = function(enrichedText, container) {
 var search = function(caller, endpoint, filterOperator) {
     $('.fa-search').addClass('d-none');
     $('.spinner-border').removeClass('d-none');
+
+    $(".results-section").LoadingOverlay("show");
     
     var filterArray = [];
     var conceptArray = [];
@@ -868,6 +879,8 @@ var search = function(caller, endpoint, filterOperator) {
     }).always(function() {
         $('.spinner-border').addClass('d-none');
         $('.fa-search').removeClass('d-none');
+
+        $(".results-section").LoadingOverlay("hide", true);
     });
 };
 
