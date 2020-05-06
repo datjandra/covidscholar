@@ -249,6 +249,10 @@
         margin-left: auto;
         margin-right: auto;
     }
+    
+    #enrichments-modal .modal-body {
+        background-color: #DCE4FF;
+    }
   </style>
 </head>
 <body>
@@ -289,11 +293,11 @@
         <input class="form-control py-2 border-right-0 border" type="search" placeholder="Enter natural language query" id="search-input">
         <span class="input-group-append">
             <button class="btn btn-outline-secondary border-left-0 border search-button" type="button">
+                <span class="spinner-border spinner-border-sm d-none"></span>
                 <i class="fa fa-search"></i>
             </button>
         </span>
     </div>
-    <div id="search-loader" class="d-none" ><img src="https://marketengine.parts/covid/ajax-loader-facebook.gif"></img></div>
 </div>
 
 <div class="container-fluid">
@@ -453,6 +457,7 @@
                     <div class="col-md-8 results-col">
                         <div class="results-section">
                             <div class="results-label">Results
+                            <span id="results-count"></span>
                             </div>
                             <ul class="results-list">
                                 <li>
@@ -504,6 +509,54 @@
             </div>
         </div>
     </div>
+    
+    <!-- Enrichments Modal -->
+    <div class="modal" id="enrichments-modal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              <div id="concepts-card" class="card filter-card mb-2">
+                <div class="card-body">
+                  <div class="card-title">
+                    <h4>Concepts</h4>
+                    <small>Click to insert in Concepts box</small>
+                  </div>
+                  <div class="card-text concepts-list"></div>
+                </div>
+              </div>
+
+              <div id="entities-card" class="card filter-card mb-2">
+                <div class="card-body">
+                  <div class="card-title">
+                    <h4>Entities</h4>
+                    <small>Click to insert in Entities box</small>
+                  </div>
+                  <div class="card-text entities-list"></div>
+                </div>
+              </div>
+
+              <div id="keywords-card" class="card filter-card">
+                <div class="card-body">
+                  <div class="card-title">
+                    <h4>Keywords</h4>
+                    <small>Click to insert in Query box</small>
+                  </div>
+                  <div class="card-text keywords-list"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+    </div>
+    <!-- Enrichments Modal -->
     
 </div>
 
@@ -632,14 +685,113 @@ var showAggregations = function(aggregations) {
                 addBadge(aggregate, label, container, result.key);
             }
             counter.text(totalResults);
-        }
-    
-                
+        }            
     }
 };
 
+var containerTextAreas = {
+  'enriched_text_concepts_text': $('#concepts_query'),
+  'enriched_text_entities_text': $('#entities_query')
+};
+
+var addEnrichmentField = function(container, filterContainer, label, text) {
+  $('<span>', {
+    class: 'badge mx-2 filter-item',
+    text: label,
+    click: function() {
+        appendText(filterContainer, text);
+    }
+  }).appendTo(container);
+};
+
+var addKeywordField = function(container, textArea, label, text) {
+  $('<span>', {
+    class: 'badge mx-2 filter-item',
+    text: label,
+    click: function() {
+      if (textArea) {
+        textValue = textArea.val();
+        if (!textValue.includes(text)) {
+          newValue = textValue + ' ' + text;
+          textArea.val(newValue.trim());
+        };
+      }
+    }
+  }).appendTo(container);
+};
+
+var addEnrichments = function(enrichedText, container) {
+  $('<button>', {
+    class: 'btn btn-link',
+    text: 'Metadata',
+    click: function() {
+      if (!enrichedText) {
+        return;
+      }
+
+      if (enrichedText.concepts && enrichedText.concepts.length > 0) {
+        var filterContainer = $('#enriched_text_concepts_text_container');
+        conceptsList = $('.concepts-list');
+        conceptsList.empty();
+        concepts = enrichedText.concepts;
+        for (var i=0; i<concepts.length; i++) {
+          addEnrichmentField(conceptsList, filterContainer,
+            concepts[i].text, concepts[i].text);
+        }
+        $('#concepts-card').show();
+      } else {
+        $('#concepts-card').hide();
+      }
+
+      if (enrichedText.entities && enrichedText.entities.length > 0) {
+        var filterContainer = $('#enriched_text_entities_text_container');
+        entitiesList = $('.entities-list');
+        entitiesList.empty();
+        duplicates = {};
+        entities = enrichedText.entities;
+        for (var i=0; i<entities.length; i++) {
+          if (!hasLetters(entities[i].text)) {
+            continue;
+          }
+
+          if (duplicates[entities[i].text]) {
+            continue;
+          } else {
+            duplicates[entities[i].text] = true;
+          }
+
+          addEnrichmentField(entitiesList, filterContainer,
+            entities[i].text, entities[i].text);
+        }
+        $('#entities-card').show();
+      } else {
+        $('#entities-card').hide();
+      }
+
+      if (enrichedText.keywords && enrichedText.keywords.length > 0) {
+        textQuery = $('#search-input');
+        keywordsList = $('.keywords-list');
+        keywordsList.empty();
+        keywords = enrichedText.keywords;
+        for (var i=0; i<keywords.length; i++) {
+          addKeywordField(keywordsList, textQuery, 
+            keywords[i].text, 
+            keywords[i].text);
+        }
+        $('keywords-card').show();
+      } else {
+        $('keywords-card').hide();
+      }
+    }
+  }).attr('data-toggle', 'modal')
+    .attr('data-target', '#enrichments-modal')
+    .appendTo(container);
+};
+
 var search = function(caller, endpoint, filterOperator) {
-    $("#search-loader").removeClass('d-none');
+    $('.fa-search').addClass('d-none');
+    $('.spinner-border').removeClass('d-none');
+    
     var filterArray = [];
     var conceptArray = [];
     $('#enriched_text_concepts_text_container').find('span.badge.filter-item').each(function() {
@@ -677,6 +829,10 @@ var search = function(caller, endpoint, filterOperator) {
         dataType: "json",
         timeout: 30000
     }).done(function(response) {
+        if (response.matching_results) {
+            $('#results-count').text('(' + response.matching_results + ' documents)');
+        }
+        
         if (response.results) {
             var resultsList = $('.results-list');
             resultsList.empty();
@@ -693,9 +849,10 @@ var search = function(caller, endpoint, filterOperator) {
                     'class': 'card-header'
                 }).appendTo(resultsItem);
                 
-                cardHeader.append('<span class="label"><a href="#">Metadata</a></span>');
-                
-                cardHeader.append('<span class="label ml-4"><a href="#">Similarity</a></span>');
+                enrichmentsContainer = $('<span>', {
+                    'class': 'label'
+                }).appendTo(cardHeader);
+                addEnrichments(result.enriched_text, enrichmentsContainer);
                 
                 cardBody = $('<div>', {
                     'class': 'card-body'
@@ -709,7 +866,8 @@ var search = function(caller, endpoint, filterOperator) {
         
         showAggregations(response.aggregations);
     }).always(function() {
-        $('#search-loader').addClass('d-none');
+        $('.spinner-border').addClass('d-none');
+        $('.fa-search').removeClass('d-none');
     });
 };
 
