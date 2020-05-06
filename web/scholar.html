@@ -33,6 +33,8 @@
     
     .btn-primary.override {
         background-color: #5375EF;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+        border-radius: 3px;
     }
     
     .select-collection {
@@ -158,8 +160,7 @@
     }
     
     .filter-card {
-        background-color: rgba(255, 255, 255, 0.8);
-        border: 1px dashed rgba(100, 100, 100, 0.5);
+        background-color: #DCE4FF;
         border-radius: 12px;
         min-height: 204px;
         overflow: hidden;
@@ -202,12 +203,28 @@
         list-style-type: none;
         margin: 0;
         padding: 0;
-        margin-top: 20px;
+    }
+    
+    .results-list .footer {
+        color: #000;
+        margin-top: 10px;
+        margin-bottom: 40px;        
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 16px;
+        letter-spacing: 0.0195417px;
+    }
+    
+    .results-list .footer a {
+        color: #000;
     }
     
     .results-item {
-        box-shadow: 0px 12px 24px rgba(73, 102, 176, 0.15), 0px 4px 4px rgba(73, 102, 176, 0.2);
-        margin: 16px 0;
+        background: #fff;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+        border-radius: 8px;
     }
     
     .results-item .card-header {
@@ -232,7 +249,7 @@
         font-weight: 600;
         font-size: 20px;
         line-height: 24px;
-        color: #5375EF;
+        color: #000;
     }
     
     .results-item .excerpt  {
@@ -243,15 +260,23 @@
         line-height: 24px;
         color: rgba(46, 41, 61, 0.7);
     }
-
+    
+    .results-item .author {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        letter-spacing: 0.0293125px;
+        color: #565656;
+    }
+    
     .input-group {
         width: 75%;
         margin-left: auto;
         margin-right: auto;
     }
     
-    #enrichments-modal .modal-body {
-        background-color: #DCE4FF;
+    #enrichments-modal .modal-footer {
+        border-top: 0;
     }
   </style>
 </head>
@@ -311,13 +336,13 @@
                 <li class="sidebar-menu">
                     <a class="clearfix" href="#" id="concepts_link">
                         <span>Concepts</span>
-                        <span class="badge float-right my-1" id="enriched_text_concepts_text_counter">3</span>
+                        <span class="badge float-right my-1" id="enriched_text_concepts_text_counter"></span>
                     </a>
                 </li>
                 <li class="sidebar-menu">
                     <a class="clearfix" href="#" id="entities_link">
                         <span>Entities</span>
-                        <span class="badge float-right my-1" id="enriched_text_entities_text_counter">3</span>
+                        <span class="badge float-right my-1" id="enriched_text_entities_text_counter"></span>
                     </a>
                 </li>
             </ul>
@@ -349,21 +374,6 @@
                             <div class="filter-box">
                                 <div class="card filter-card">
                                     <div id="enriched_text_concepts_text_container" class="card-body">
-                                        <span class="badge
-                                       filter-item">World Health Organization
-                                        &nbsp;
-                                        33454 
-                                        &nbsp;&#10006;</span>
-                                        
-                                        <span class="badge filter-item">Epidemiology
-                                        &nbsp;
-                                        111160 
-                                        &nbsp;&#10006;</span>
-                                        
-                                        <span class="badge filter-item">Severe acute respiratory syndro...
-                                        &nbsp;
-                                        332560 
-                                        &nbsp;&#10006;</span>
                                     </div>
                                 </div>
                             </div>
@@ -371,21 +381,6 @@
                             <div class="filter-label filter-heading">Aggregate concepts</div>
                             
                             <div id="enriched_text_concepts_text_aggregate">
-                                <span class="badge
-                                       filter-item">World Health Organization
-                                        &nbsp;
-                                        33454 
-                                        &nbsp;&#10006;</span>
-                                        
-                                <span class="badge filter-item">Epidemiology
-                                        &nbsp;
-                                        111160 
-                                        &nbsp;&#10006;</span>
-                                        
-                                <span class="badge filter-item">Severe acute respiratory syndro...
-                                &nbsp;
-                                332560 
-                                &nbsp;&#10006;</span>
                             </div>    
                         </div>
                         
@@ -413,95 +408,21 @@
                             <div class="filter-box">
                                 <div class="card filter-card">
                                     <div id="enriched_text_entities_text_container" class="card-body">
-                                        <span class="badge
-                                       filter-item">World Health Organization
-                                        &nbsp;
-                                        33454 
-                                        &nbsp;&#10006;</span>
-                                        
-                                        <span class="badge filter-item">Epidemiology
-                                        &nbsp;
-                                        111160 
-                                        &nbsp;&#10006;</span>
-                                        
-                                        <span class="badge filter-item">Severe acute respiratory syndro...
-                                        &nbsp;
-                                        332560 
-                                        &nbsp;&#10006;</span>
                                     </div>
                                 </div>
                             </div>
                             
-                            <div class="filter-label filter-heading">Aggregate entities</div>
+                            <div class="filter-label filter-heading">Common entities</div>
                             
                             <div id="enriched_text_entities_text_aggregate">
-                                <span class="badge
-                                       filter-item">WHO
-                                        &nbsp;
-                                        33454 
-                                        &nbsp;&#10006;</span>
-                                        
-                                <span class="badge filter-item">COVID-19
-                                        &nbsp;
-                                        111160 
-                                        &nbsp;&#10006;</span>
-                                        
-                                <span class="badge filter-item">novel coronavirus
-                                &nbsp;
-                                332560 
-                                &nbsp;&#10006;</span>
                             </div>
                             
                         </div>
                     </div>
                     <div class="col-md-8 results-col">
                         <div class="results-section">
-                            <div class="results-label">Results
-                            <span id="results-count"></span>
-                            </div>
+                            <div id="results-count" class="results-label"></div>
                             <ul class="results-list">
-                                <li>
-                                    <div class="card results-item">
-                                        <div class="card-header">
-                                        <span class="label"><a href="#">Metadata</a></span>
-                                        <span class="label ml-4"><a href="#">Similarity</a></span>
-                                        </div>
-                                        
-                                        <div class="card-body">
-                                            <a href="#" class="title">Predictions, role of interventions and effects of a historic national lockdown in India's response to the COVID-19 pandemic: data science call to arms</a>
-                                            <p class="excerpt">Importance: India has taken strong and early public health measures for arresting the spread of the COVID-19 epidemic. With only 536 COVID-19 cases and 11 fatalities, India - a democracy of 1.34 billion people - took the historic decision of a 21-day national lockdown on March 25...</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                
-                                <li>
-                                    <div class="card results-item">
-                                        <div class="card-header">
-                                        <span class="label"><a href="#">Metadata</a></span>
-                                        <span class="label ml-4"><a href="#">Similarity</a></span>
-                                        </div>
-                                        
-                                        <div class="card-body">
-                                            <a href="#" class="title">Will COVID-19 pandemic diminish by summer-monsoon in India? Lesson from the first lockdown</a>
-                                            <p class="excerpt">However, the role of temperature, humidity, and absolute humidity in the transmission of COVID-19 has not yet been well established. Therefore the study to investigate the meteorological condition for incidence and spread of COVID-19 infection, to predict..</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                
-                                <li>
-                                    <div class="card results-item">
-                                        <div class="card-header">
-                                        <span class="label"><a href="#">Metadata</a></span>
-                                        <span class="label ml-4"><a href="#">Similarity</a></span>
-                                        </div>
-                                        
-                                        <div class="card-body">
-                                            <a href="#" class="title">A novel high specificity COVID-19 screening method based on simple blood exams and artificial intelligence</a>
-                                            <p class="excerpt">Despite governmental initiatives aimed at containing the spread of the disease, several countries are experiencing unmanageable increases in the demand for ICU beds, medical equipment, and larger testing capacity. Efficient COVID-19 diagnosis enables healthcare systems to provide better care for patients while protecting caregivers from the disease...</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                
                             </ul>
                         </div>
                     </div>
@@ -521,7 +442,7 @@
                 <div class="card-body">
                   <div class="card-title">
                     <h4>Concepts</h4>
-                    <small>Click to insert in Concepts box</small>
+                    <small>Click to insert in Concepts filter</small>
                   </div>
                   <div class="card-text concepts-list"></div>
                 </div>
@@ -531,7 +452,7 @@
                 <div class="card-body">
                   <div class="card-title">
                     <h4>Entities</h4>
-                    <small>Click to insert in Entities box</small>
+                    <small>Click to insert in Entities filter</small>
                   </div>
                   <div class="card-text entities-list"></div>
                 </div>
@@ -541,7 +462,7 @@
                 <div class="card-body">
                   <div class="card-title">
                     <h4>Keywords</h4>
-                    <small>Click to insert in Query box</small>
+                    <small>Click to insert in Query field</small>
                   </div>
                   <div class="card-text keywords-list"></div>
                 </div>
@@ -550,7 +471,7 @@
 
             <!-- Modal footer -->
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary override" data-dismiss="modal">Close</button>
             </div>
 
           </div>
@@ -721,8 +642,7 @@ var addKeywordField = function(container, textArea, label, text) {
 };
 
 var addEnrichments = function(enrichedText, container) {
-  $('<button>', {
-    class: 'btn btn-link',
+  $('<a>', {
     text: 'Metadata',
     click: function() {
       if (!enrichedText) {
@@ -785,6 +705,7 @@ var addEnrichments = function(enrichedText, container) {
     }
   }).attr('data-toggle', 'modal')
     .attr('data-target', '#enrichments-modal')
+    .attr('href', '#')
     .appendTo(container);
 };
 
@@ -830,7 +751,7 @@ var search = function(caller, endpoint, filterOperator) {
         timeout: 30000
     }).done(function(response) {
         if (response.matching_results) {
-            $('#results-count').text('(' + response.matching_results + ' documents)');
+            $('#results-count').text('Results (' + response.matching_results + ' documents)');
         }
         
         if (response.results) {
@@ -845,22 +766,38 @@ var search = function(caller, endpoint, filterOperator) {
                     'class': 'card results-item'
                 }).appendTo(listItem);
                 
-                cardHeader = $('<div>', {
-                    'class': 'card-header'
-                }).appendTo(resultsItem);
-                
-                enrichmentsContainer = $('<span>', {
-                    'class': 'label'
-                }).appendTo(cardHeader);
-                addEnrichments(result.enriched_text, enrichmentsContainer);
-                
                 cardBody = $('<div>', {
                     'class': 'card-body'
                 }).appendTo(resultsItem);
                 
                 cardBody.append('<a href="' + result.url + '" class="title" target="_blank">' + result.title + '</a>');
                 
+                var author = result.author;
+                if (author) {
+                    if ($.isArray(author)) {
+                        authors = author.map(function(e) {
+                            return e.author_name;
+                        }).join(', ');
+                        cardBody.append('<p class="author">' + authors + '</p>');
+                    } else {
+                        cardBody.append('<p class="author">' + author + '</p>');
+                    }
+                }
+                
                 cardBody.append('<p class="excerpt">' + result.text + '</p>');
+                
+                footer = $('<div>', {
+                    'class': 'footer'
+                }).appendTo(listItem);
+                
+                enrichmentsContainer = $('<span>').appendTo(footer);
+                
+                addEnrichments(result.enriched_text, enrichmentsContainer);
+                
+                $('<span>', {
+                    'class': 'ml-5'
+                }).text(result.publication_date)
+                    .appendTo(footer);
             }
         }
         
