@@ -455,17 +455,10 @@
                             
                             <div id="results-passages" class="container-fluid px-0 d-none">
                               <div class="results-label">Excerpts</div>            
-                              <table class="table results-table">
-                                <thead>
-                                  <tr>
-                                    <th>Article</th>
-                                    <th>Date</th>
-                                    <th>Excerpt</th>
-                                    <th>Diseases</th>
-                                    <th>Drugs</th>
-                                  </tr>
+                              <table class="table table-responsive results-table">
+                                <thead id="results-table-headers">
                                 </thead>
-                                <tbody id="passage-list">
+                                <tbody id="results-table-data">
                                 </tbody>
                               </table>
                             </div>
@@ -795,14 +788,14 @@ var getDiseases = function(enrichedTitle, enrichedText) {
     return unique.join(', ');
 };
 
-var drugTypes = ["Drug"];
-var getDrugs = function(enrichedTitle, enrichedText) {
-    var drugs = [];
-    drugs.push.apply(drugs, findEntities(enrichedTitle, drugTypes));
-    drugs.push.apply(drugs, findEntities(enrichedText, drugTypes));
+var treatmentTypes = ["Drug"];
+var getTreatments = function(enrichedTitle, enrichedText) {
+    var treatments = [];
+    treatments.push.apply(treatments, findEntities(enrichedTitle, treatmentTypes));
+    treatments.push.apply(treatments, findEntities(enrichedText, treatmentTypes));
     
     var unique = [];
-    $.each(drugs, function(i, el){
+    $.each(treatments, function(i, el){
         if ($.inArray(el, unique) === -1) {
             unique.push(el);
         }    
@@ -812,8 +805,9 @@ var getDrugs = function(enrichedTitle, enrichedText) {
 
 var showPassages = function(resultSet, passages) {
     $('#results-passages').removeClass('d-none');
-    var passageList = $('#passage-list');
-    passageList.empty();
+    var tableData = [];
+    var hasDisease = false;
+    var hasTreatment = false;
     for (var i=0; i<passages.length; i++) {
         passage = passages[i];
         doc = resultSet[passage.document_id];
@@ -821,22 +815,68 @@ var showPassages = function(resultSet, passages) {
             continue;
         }
         
-        tableRow = $('<tr>').appendTo(passageList);
+        var tableRow = {
+            url: doc.url,
+            title: doc.title,
+            text: passage.passage_text
+        };
+        
+        var diseases = getDiseases(doc.enriched_title, doc.enriched_text)
+        if (diseases && diseases.length > 0) {
+            hasDisease = true;
+        }
+        tableRow['diseases'] = diseases;
+        
+        var treatments = getTreatments(doc.enriched_title, doc.enriched_text);
+        if (treatments && treatments.length > 0) {
+            hasTreatment = true;
+        }
+        tableRow['treatments'] = treatments;
+        tableData.push(tableRow);    
+    }
+    
+    var tableHeaders = $('#results-table-headers');
+    tableHeaders.empty();
+    var tableHeaderRow = $('<tr>').appendTo(tableHeaders);
+    
+    $('<th>').text('Title')
+            .appendTo(tableHeaderRow);    
+    
+    $('<th>').text('Excerpt')
+            .appendTo(tableHeaderRow);   
+    
+    if (hasDisease) {
+        $('<th>').text('Disease')
+            .appendTo(tableHeaderRow);
+    }
+    
+    if (hasTreatment) {
+        $('<th>').text('Treatment')
+            .appendTo(tableHeaderRow);
+    }
+    
+    var tableRows = $('#results-table-data');
+    tableRows.empty();
+    
+    for (var i=0; i<tableData.length; i++) {
+        var doc = tableData[i];
+        var tableRow = $('<tr>').appendTo(tableRows);
         
         $('<td>').append('<a href="' + doc.url + '" target="_blank">' + doc.title + '</a>')
             .appendTo(tableRow);
+     
+        $('<td>').text(doc.text)
+            .appendTo(tableRow);
+         
+        if (hasDisease) {
+            $('<td>').text(doc.diseases)
+            .appendTo(tableRow);
+        }
         
-        $('<td>').text(doc.publication_date)
+        if (hasTreatment) {
+            $('<td>').text(doc.treatments)
             .appendTo(tableRow);
-        
-        $('<td>').text(passage.passage_text)
-            .appendTo(tableRow);
-            
-        $('<td>').text(getDiseases(doc.enriched_title, doc.enriched_text))
-            .appendTo(tableRow);
-            
-        $('<td>').text(getDrugs(doc.enriched_title, doc.enriched_text))
-            .appendTo(tableRow);
+        }
     }
 };
 
