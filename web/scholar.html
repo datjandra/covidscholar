@@ -253,6 +253,18 @@
         color: #000;
     }
     
+    .results-item .toggle-container {
+        margin-bottom: 1rem;
+        text-align: right;
+    }
+    
+    .results-item .toggler {
+        color: #fff;
+        background-color: #5375EF;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+        border-radius: 3px;
+    }
+    
     .results-item .excerpt  {
         font-family: Roboto;
         font-style: normal;
@@ -260,6 +272,7 @@
         font-size: 16px;    
         line-height: 24px;
         color: rgba(46, 41, 61, 0.7);
+        display: none;
     }
     
     .results-item .author {
@@ -268,6 +281,15 @@
         font-weight: normal;
         letter-spacing: 0.0293125px;
         color: #565656;
+    }
+    
+    .results-table {
+        background-color: #fff;
+    }
+    
+    .results-table a {
+        color: #000;
+        font-weight: 600;
     }
     
     .input-group {
@@ -387,7 +409,7 @@
                                 </div>
                             </div>
                             
-                            <div class="filter-label filter-heading">Aggregate concepts</div>
+                            <div class="filter-label filter-heading">Common concepts</div>
                             
                             <div id="enriched_text_concepts_text_aggregate">
                             </div>    
@@ -430,6 +452,24 @@
                     </div>
                     <div class="col-md-8 results-col">
                         <div class="results-section">
+                            
+                            <div id="results-passages" class="container-fluid px-0 d-none">
+                              <div class="results-label">Excerpts</div>            
+                              <table class="table results-table">
+                                <thead>
+                                  <tr>
+                                    <th>Article</th>
+                                    <th>Date</th>
+                                    <th>Excerpt</th>
+                                    <th>Diseases</th>
+                                    <th>Drugs</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="passage-list">
+                                </tbody>
+                              </table>
+                            </div>
+                        
                             <div id="results-count" class="results-label"></div>
                             <ul class="results-list">
                             </ul>
@@ -718,11 +758,99 @@ var addEnrichments = function(enrichedText, container) {
     .appendTo(container);
 };
 
-var search = function(caller, endpoint, filterOperator) {
-    $('.fa-search').addClass('d-none');
-    $('.spinner-border').removeClass('d-none');
+var findEntities = function(enrichedField, types) {
+    var entityList = [];
+    if (enrichedField.entities) {
+        entities = enrichedField.entities;
+        for (var i=0; i<entities.length; i++) {
+            entity = entities[i];
+            if (types.includes(entity.type)) {
+                entityList.push(entity.text);
+            } else if (entity.disambiguation && entity.disambiguation.subtype) {
+                subtypes = entity.disambiguation.subtype;                
+                for (var j=0; j<subtypes.length; j++) {
+                    if (types.includes(subtypes[j])) {
+                        entityList.push(entity.text);
+                        break;
+                    }
+                }                                    
+            }
+        }
+    }    
+    return entityList;
+};
 
+var diseaseTypes = ["CauseOfDeath", "Disease", "DiseaseOrMedicalCondition", "InfectiousDisease", "RiskFactor", "DiseaseCause", "Symptom"];
+var getDiseases = function(enrichedTitle, enrichedText) {
+    var diseases = [];
+    diseases.push.apply(diseases, findEntities(enrichedTitle, diseaseTypes));
+    diseases.push.apply(diseases, findEntities(enrichedText, diseaseTypes));
+    
+    var unique = [];
+    $.each(diseases, function(i, el){
+        if ($.inArray(el, unique) === -1) {
+            unique.push(el);
+        }    
+    });
+    return unique.join(', ');
+};
+
+var drugTypes = ["Drug"];
+var getDrugs = function(enrichedTitle, enrichedText) {
+    var drugs = [];
+    drugs.push.apply(drugs, findEntities(enrichedTitle, drugTypes));
+    drugs.push.apply(drugs, findEntities(enrichedText, drugTypes));
+    
+    var unique = [];
+    $.each(drugs, function(i, el){
+        if ($.inArray(el, unique) === -1) {
+            unique.push(el);
+        }    
+    });
+    return unique.join(', ');
+};
+
+var showPassages = function(resultSet, passages) {
+    $('#results-passages').removeClass('d-none');
+    var passageList = $('#passage-list');
+    passageList.empty();
+    for (var i=0; i<passages.length; i++) {
+        passage = passages[i];
+        doc = resultSet[passage.document_id];
+        if (!doc) {
+            continue;
+        }
+        
+        tableRow = $('<tr>').appendTo(passageList);
+        
+        $('<td>').append('<a href="' + doc.url + '" target="_blank">' + doc.title + '</a>')
+            .appendTo(tableRow);
+        
+        $('<td>').text(doc.publication_date)
+            .appendTo(tableRow);
+        
+        $('<td>').text(passage.passage_text)
+            .appendTo(tableRow);
+            
+        $('<td>').text(getDiseases(doc.enriched_title, doc.enriched_text))
+            .appendTo(tableRow);
+            
+        $('<td>').text(getDrugs(doc.enriched_title, doc.enriched_text))
+            .appendTo(tableRow);
+    }
+};
+
+var toggleExcerpt = function(toggler, excerpt) {
+    toggler.click(function() {
+        excerpt.toggle();
+    });
+};
+
+var search = function(caller, endpoint, filterOperator) {
     $(".results-section").LoadingOverlay("show");
+    $('#results-passages').addClass('d-none');
+    $('#results-count').text('');
+    $('.results-list').empty();
     
     var filterArray = [];
     var conceptArray = [];
@@ -765,12 +893,15 @@ var search = function(caller, endpoint, filterOperator) {
             $('#results-count').text('Results (' + response.matching_results + ' documents)');
         }
         
-        if (response.results) {
+        var resultSet;
+        if (response.results && response.results.length > 0) {
+            resultSet = {};
             var resultsList = $('.results-list');
             resultsList.empty();
             var results = response.results;
             for (var i=0; i<results.length; i++) {
-                result = results[i];
+                var result = results[i];
+                resultSet[result.id] = result;
                 listItem = $('<li>').appendTo(resultsList);
                 
                 resultsItem = $('<div>', {
@@ -795,8 +926,22 @@ var search = function(caller, endpoint, filterOperator) {
                     }
                 }
                 
-                cardBody.append('<p class="excerpt">' + result.text + '</p>');
+                toggleContainer = $('<div>', {
+                    'class': 'toggle-container'
+                }).appendTo(cardBody);
                 
+                toggler = $('<button>', {
+                    'class': 'btn toggler'
+                }).text('Read')
+                    .appendTo(toggleContainer);
+                
+                excerpt = $('<p>', {
+                    'class': 'excerpt'
+                }).text(result.text)
+                    .appendTo(cardBody);
+                
+                toggleExcerpt(toggler, excerpt);
+                               
                 footer = $('<div>', {
                     'class': 'footer'
                 }).appendTo(listItem);
@@ -810,13 +955,16 @@ var search = function(caller, endpoint, filterOperator) {
                 }).text(result.publication_date)
                     .appendTo(footer);
             }
+        } else {
+            $('#results-count').text('No results found');
         }
         
         showAggregations(response.aggregations);
-    }).always(function() {
-        $('.spinner-border').addClass('d-none');
-        $('.fa-search').removeClass('d-none');
-
+        
+        if (resultSet && response.passages && response.passages.length > 0) {
+            showPassages(resultSet, response.passages);
+        }
+    }).always(function() {        
         $(".results-section").LoadingOverlay("hide", true);
     });
 };
