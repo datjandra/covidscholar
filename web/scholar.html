@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>CovidScholar</title>
+  <title>DinoSARS</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -314,7 +314,7 @@
     }
     
     .modal-card {
-        background-color: #DCE4FF;
+        background-color: #fefefe;
         border-radius: 12px;
         min-height: 204px;
         overflow: hidden;
@@ -366,23 +366,27 @@
 <body>
 
 <nav class="navbar navbar-expand-sm navbar-light fixed-top bg-light white-background">
-<a class="navbar-brand" href="#">CovidScholar</a>
+<a class="navbar-brand" href="scholar.html">DinoSARS</a>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
   <span class="navbar-toggler-icon"></span>
 </button>
 <div class="collapse navbar-collapse" id="navbarCollapse">
   <ul class="navbar-nav mr-auto">
+    <!--
     <li class="nav-item">
       <a class="nav-link" href="#">How to use</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#">Methodology</a>
     </li>
+    -->
   </ul>
   
+  <!--
   <button class="btn btn-outline-primary override mx-2">Feedback</button>
+  -->
   
-  <button class="btn btn-primary override mx-2">Export</button>
+  <button class="btn btn-primary override mx-2">Feedback</button>
 </div>
 </nav>
 
@@ -459,6 +463,17 @@
                                     <div id="enriched_text_concepts_text_container" class="card-body">
                                     </div>
                                 </div>
+                                
+                                <div class="container text-center">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="concepts-operator" id="concepts-operator-and" value="," checked>
+                                        <label class="form-check-label" for="concepts-operator-and">AND</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="concepts-operator" id="concepts-operator-or" value="|">
+                                        <label class="form-check-label" for="concepts-operator-or">OR</label>
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="filter-label filter-heading">Common concepts</div>
@@ -492,6 +507,16 @@
                                     <div id="enriched_text_entities_text_container" class="card-body">
                                     </div>
                                 </div>
+                                <div class="container text-center">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="entities-operator" id="entities-operator-and" value="," checked>
+                                        <label class="form-check-label" for="entities-operator-and">AND</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="entities-operator" id="entities-operator-or" value="|">
+                                        <label class="form-check-label" for="entities-operator-or">OR</label>
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="filter-label filter-heading">Common entities</div>
@@ -506,8 +531,8 @@
                             <div class="row">
                                 <div class="col-md-4 px-0">
                                     <div class="panel">
-                                        <svg width="270" height="362" viewBox="0 0 270 362" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                            <rect width="270" height="362" fill="url(#pattern0)"/>
+                                        <svg width="300" height="200" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <rect width="300" height="200" fill="url(#pattern0)"/>
                                             <defs>
                                             <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
                                             <use xlink:href="#image0" transform="scale(0.00219298 0.00159236)"/>
@@ -983,8 +1008,12 @@ var search = function(caller, endpoint, filterOperator) {
         conceptArray.push($(this).text());
     });
     
-    if (conceptArray.length > 0){
-        filterArray.push("enriched_text.concepts.text:" + conceptArray.join(filterOperator));
+    if (conceptArray.length > 0) {
+        var conceptsOperator = $('input[name=concepts-operator]:checked').val();
+        if (!conceptsOperator) {
+            conceptsOperator = filterOperator;
+        }
+        filterArray.push("enriched_text.concepts.text:" + conceptArray.join(conceptsOperator));
     }
     
     var entitiesArray = [];
@@ -993,7 +1022,11 @@ var search = function(caller, endpoint, filterOperator) {
     });
     
     if (entitiesArray.length > 0){
-        filterArray.push("enriched_text.entities.text:" + entitiesArray.join(filterOperator));
+        var entitiesOperator = $('input[name=entities-operator]:checked').val();
+        if (!entitiesOperator) {
+            entitiesOperator = filterOperator;
+        }
+        filterArray.push("enriched_text.entities.text:" + entitiesArray.join(entitiesOperator));
     }
     
     var filter = "";
