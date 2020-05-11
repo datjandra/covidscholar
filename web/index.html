@@ -1,486 +1,683 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <link type="text/css" href="https://marketengine.parts/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <title>DinoSARS</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
   <style>
-    h3 {
-      font-family: helvetica-w01-roman, helvetica-w02-roman, helvetica-lt-w10-roman, sans-serif;
-      font-size: 22px;
-      letter-spacing: 0.08em;
-      line-height: normal;
-      color: #333333;
+    body {
+        padding-top: 55px;
+    }
+  
+    .white-background {
+        background-color: #fff !important;
+    }
+  
+    .navbar-light .navbar-brand {
+        color: #5375EF;
+    }
+    
+    .navbar-light .nav-item .nav-link {
+        color: #5375EF;
+    }
+    
+    .btn-outline-primary.override {
+        color: #5375EF;
+        border-color: #5375EF;
+    }
+    
+    .btn-primary.override {
+        background-color: #5375EF;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+        border-radius: 3px;
+    }
+    
+    .select-collection {
+        background-color: #fff;
+        border-top-left-radius: .25rem;
+        border-bottom-left-radius: .25rem;
     }
 
-    .logo {
-      width: 64px;
-      height: 56px;
-      object-fit: contain;
+    .dropdown-toggle {
+        width: 194px;
+        text-align: left;
     }
 
-    div.container {
-      margin-top: 20px;
+    .dropdown-toggle::after {
+        float: right;
+        margin-top: 10px;
+    }
+    
+    .dropdown-menu {
+        padding: 0.375rem 0.75rem;
     }
 
-    .panel-query {
-      border: 1px solid #444;
-      box-shadow: none;
-      border-radius: 0;
-      -webkit-border-radius: 0;
+    .search-section {
+        background-color: #4966B0;
+        border-radius: 0;
+        margin-bottom: 0;
+    }
+    
+    .search-button {
+        background-color: #5375EF;
+        color: #fff;
+    }
+    
+    .sidebar {
+        background-color: #5375EF;
+        color: #fff;
+        padding-right: 20px;
+        min-height: calc(100vh - 50px);
     }
 
-    .panel-query>.card-header {
-      background-color: #DDEAF6;
-      border-bottom: 1px solid #444;
-      text-align: center;
+    .sidebar .sidebar-header {
+        padding: 20px;
+        overflow: hidden;
+    }   
+    
+    .nav-sidebar {
+        list-style: none;
+        padding: 0;
+        margin: 0
+    }
+    
+    .nav-sidebar .sidebar-menu {
+        margin-bottom: 10px;
     }
 
-    .panel-search>.card-header {
+    .nav-sidebar .sidebar-menu a {
+        display: inline-block;
+        width: 100%;
+        text-decoration: none;
+        position: relative;
+        padding: 8px 30px 8px 20px;
+        color: #fff;
     }
 
-    .panel-filter {
-      border: 1px solid #444;
-      box-shadow: none;
-      border-radius: 0;
-      -webkit-border-radius: 0;
-      flex: 1;
-      overflow: hidden;
+    .nav-sidebar li a span.badge {
+        float: right;
+        margin-top: 8px;
+        margin-left: 5px;
+        background: #FFFFFF;
+        font-family: Roboto;
+        color: rgba(46, 41, 61, 0.8);
+    }
+    
+    .nav-sidebar li.active {
+        background-color: #DCE4FF;
+    }
+    
+    .nav-sidebar li.active span {
+        color: #5375EF;
+    }
+    
+    .nav-sidebar li.active a span.badge {
+        background-color: #5375EF;
+        color: #fff;
+    }
+    
+    .filter-col {
+        background-color: #DCE4FF; 
+        color: rgba(46, 41, 61, 0.7);
+        font-family: Manrope;
+        font-style: normal;
+    }
+    
+    .filter-section {
+        margin-top: 20px;
+    }
+    
+    .filter-label {
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 25px;
+    }
+    
+    .filter-help {
+        color: rgba(46, 41, 61, 0.7);
+    }
+    
+    .filter-input {
+        padding-top: 40px;
+    }
+    
+    .filter-box {
+        padding-top: 40px;
+    }
+    
+    .filter-button {
+        background-color: #5375EF;
+        color: #fff;
+    }
+    
+    .filter-label {
+        padding-top: 40px;
+    }
+    
+    .filter-card {
+        border-radius: 12px;
+        min-height: 204px;
+        overflow: hidden;
+    }
+    
+    .filter-item {
+        background: #5375EF;
+        border-radius: 6px;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 12px;
+        line-height: 16px;
+        color: #FFFFFF;
+        flex: none;
+        order: 1;
+        align-self: center;
+        margin: 8px 0px;
+        cursor: pointer;
+    }
+    
+    .results-col {
+        background-color: #93B1EB;
+        color: #fff;
+    }
+    
+    .results-section {
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    
+    .results-label {
+        font-family: Manrope;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 25px;
+    }
+    
+    .results-list {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .results-list .footer {
+        color: #000;
+        margin-top: 10px;
+        margin-bottom: 40px;        
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 16px;
+        letter-spacing: 0.0195417px;
+    }
+    
+    .results-list .footer a {
+        color: #000;
+    }
+    
+    .results-item {
+        background: #fff;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+        border-radius: 8px;
+        color: #000;
+    }
+    
+    .results-item .card-header {
+        background-color: #fff;
+        border-bottom: 0;
+    }
+    
+    .results-item .label {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 16px;
+        align-items: center;
+        text-align: center;
+        color: #5375EF;
+    }
+    
+    .results-item .title {
+        font-family: Manrope;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
+        color: #000;
+    }
+    
+    .results-item .toggle-container {
+        margin-bottom: 1rem;
+        text-align: right;
+    }
+    
+    .results-item .toggler {
+        color: #fff;
+        background-color: #5375EF;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+        border-radius: 3px;
+    }
+    
+    .results-item .excerpt  {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;    
+        line-height: 24px;
+        color: rgba(46, 41, 61, 0.7);
+        display: none;
+    }
+    
+    .results-item .author {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        letter-spacing: 0.0293125px;
+        color: #565656;
+    }
+    
+    .results-item .highlight {
+        color: #000;
+    }
+    
+    .results-item .highlight em {
+        font-weight: 700;
+        font-style: normal;
+        background-color: yellow;
+    }
+    
+    .results-table {
+        background-color: #fff;
+    }
+    
+    .results-table a {
+        color: #000;
+        font-weight: 600;
+    }
+    
+    .input-group {
+        width: 75%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    #enrichments-modal .modal-footer {
+        border-top: 0;
+    }
+    
+    .modal-card {
+        background-color: #fefefe;
+        border-radius: 12px;
+        min-height: 204px;
+        overflow: hidden;
     }
 
-    .panel-filter>.card-header {
-      background-color: #ACB8C9;
-      border-bottom: 1px solid #444;
-      overflow: auto;
+    .loadingoverlay {
+        justify-content: flex-start !important;
     }
 
-    .panel-filter>.card-body {
-      min-height: 90vh;
+    .loadingoverlay_element {
+        margin-top: 200px   !important;
+    }
+    
+    #popular-searches {
+        background-color: #fff;
+        color: #000;
+    }
+    
+    #popular-searches h2 {
+        font-family: Manuale;
+        letter-spacing: 0.025125px;
+        color: #565656;
+    }
+    
+    #popular-searches .panel {
+        margin-top: 20px;
+    }
+ 
+    #popular-searches ul.predefined {
+        list-style: none;
+        padding-left: 1rem;
     }
 
-    nav.headline {
-      background-color: #FAFAFA !important;
+    #popular-searches ul.predefined li::before {
+        content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+        color: #5375EF; /* Change the color */
+        font-weight: bold; /* If you want it to be bold */
+        display: inline-block; /* Needed to add space between the bullet and the text */
+        width: 1em; /* Also needed for space (tweak if needed) */
+        margin-left: -1em; /* Also needed for space (tweak if needed) */
     }
-
-    .row-spacing {
-      margin-top: 10px;
+        
+    #popular-searches a:link {
+        font-family: Manuale;
+        color: #5375EF;
     }
-
-    .img-container {
-      position: relative;
+    
+    .svg-container { 
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        padding-bottom: 100%; 
+        vertical-align: middle; 
+        overflow: hidden; 
     }
-
-    div.middle-align {
-      display: inline-block;
+    
+    .svg-content { 
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
     }
-
-    .img-container .middle-align {
-      vertical-align: middle;
+ 
+    .carousel-caption {
+        position: relative;
+        color: #000;
+        text-align: left;
+        width: 70%;
     }
-
-    .img-container .right-align {
-      display: inline-block;
-      position: absolute;
-      right: 0;
-      bottom: 0;
+    
+    .carousel-caption a:link, a:visited {
+        color: #000;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
     }
-
-    .loader {
-      margin: 0;
-      position: relative;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 25%;
+    
+    .carousel-caption p:last-child {
+        margin-bottom: 0;
     }
-
-    @-webkit-keyframes spin {
-      0% {
-        -webkit-transform: rotate(0deg);
-      }
-      100% {
-        -webkit-transform: rotate(360deg);
-      }
-    }
-
-    @keyframes spin {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-
-    .vertical-align-middle {
-      vertical-align: middle;
-    }
-
-    .main-title {
-      font-size: 32px;
-      color: #FF9900;
-      font-family: Trebuchet MS (Calibri);
-    }
-
-    #watson_brand {
-      width: 170px;
-      height: 170px;
-    }
-
-    .column-title {
-      padding-left: 4px;
-      margin-bottom: 4px;
-    }
-
-    .clickable {
-      cursor: pointer;
-    }
-
-    .draggable {
-      background-color: #fff;
-      color: #21759b;
-      padding: 4px;
-      cursor: move;
-      word-wrap: break-word;
-      margin-bottom: 1em;
-    }
-
-    .droppable {
-      padding: 0.5em;
-      margin: 10px;
-    }
-
-    .droppable textarea {
-      width: 100%;
-      resize: none;
-      border: 1px dashed #aaa;
-    }
-
-    .field {
-      white-space: normal;
-    }
-
-    #matching_results {
-      color: #808080;
-      line-height: 43px;
-    }
-
-    .news-image {
-      max-width: 200px;
-      max-height: 200px;
+    
+    .passage-text {
+        margin-top: 1rem;
     }
   </style>
-  <title>Biosight ☣️</title>
 </head>
-
 <body>
 
-  <nav class="navbar navbar-expand-sm bg-light headline">
-    <span class="navbar-brand mx-auto">COVID-19 Cognitive Search Engine</span>
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a id="feedback-link" class="nav-link" href="#">Feedback</a>
-      </li>
-    </ul>
-  </nav>
+<nav class="navbar navbar-expand-sm navbar-light fixed-top bg-light white-background">
+<a class="navbar-brand" href="index.html">DinoSARS</a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarCollapse">
+  <ul class="navbar-nav mr-auto">
+    <!--
+    <li class="nav-item">
+      <a class="nav-link" href="#">How to use</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Methodology</a>
+    </li>
+    -->
+  </ul>
+  
+  <!--
+  <button class="btn btn-outline-primary override mx-2">Feedback</button>
+  -->
+  
+  <button id="feedback-link" class="btn btn-primary override mx-2">Feedback</button>
+</div>
+</nav>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="img-container">
-          <img id="watson_brand" class="middle-align" src="images/watson.png" />
+<div class="jumbotron text-center search-section">
+    <h3 class="text-white">Understand the latest research data to stomp out SARS-CoV-2</h3>
+    <div class="input-group">
+        <div class="input-group-btn select-collection">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span id="search_concept">Select a Collection</span> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li>medRxiv</li>
+              <li>News</li>
+            </ul>
         </div>
-        <div><small id="matching_results"></small></div>
-      </div>
+            
+        <input class="form-control py-2 border-right-0 border" type="search" placeholder="Enter natural language query" id="search-input">
+        <span class="input-group-append">
+            <button class="btn btn-outline-secondary border-left-0 border search-button" type="button">
+                <span class="spinner-border spinner-border-sm d-none"></span>
+                <i class="fa fa-search"></i>
+            </button>
+        </span>
     </div>
+</div>
 
-    <div class="row row-spacing">
-      <div class="col-md-6">
-        <div class="card panel-search panel-query">
-          <div class="card-header d-flex align-items-center justify-content-center">Query</div>
-          <div class="card-body">
-            <div class="form-group text-center">
-              <div id="essential_droppable" class="droppable">
-                <textarea id="query" class="form-control"
-                placeholder="[ Click here to enter a natural language query ]"></textarea>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <button id="search-button"
-                    type="button" class="btn btn-primary btn-block">Search bioRxiv</button>
-                </div>
-                <div class="col-md-6">
-                  <button id="search-news"
-                    type="button" class="btn btn-primary btn-block">Search News</button>
-                </div>
-              </div>
+<div class="container-fluid">
+    
+    <div class="row" >
+        <div class="col-sm-3 col-md-2 sidebar px-0">
+            <div class="sidebar-header">
+            Refine the Search
             </div>
-
-            <p>Welcome to Biosight, a cognitive search engine for COVID-19 research powered by IBM Watson.
-              Biosight is designed for researchers to obtain new insights in support of the fight against the coronavirus pandemic.
-              The current version of the service is based on <a href="https://pages.semanticscholar.org/coronavirus-research" target="_blank">CORD-19</a> and Watson news data.
-              Users can enter natural language queries with metadata enrichments and quickly find relevant content with accuracy.</p>
-          </div>
-        </div>
-
-        <div class="card panel-query mt-4">
-          <div class="card-header">
-            <div>Predefined Queries</div>
-            <small>Click on a predefined query. Then click a search button.</small>
-          </div>
-          <div class="card-body">
-
-            <textarea id="extra_query" class="d-none"
-              placeholder="[ Click here to enter entity search terms ]"></textarea>
-            <ul class="list-unstyled predefined">
-              <h5>Works in both collections</h5>
-              <li><a
-                data-concepts="Vaccine,&quot;Immune system&quot;"
-                href="#">Considerations for COVID-19 vaccine construction</a>
-              </li>
-              <li><a
-                data-concepts="Epidemiology,&quot;Infectious disease&quot;"
-                href="#">Predicting COVID-19 epidemic risk</a>
-              </li>
-              <li><a
-                data-concepts="DNA"
-                href="#">Similarity of coronavirus genome sequence</a>
-              </li>
-              <li><a
-                data-concepts="Enzyme"
-                href="#">Treatments that inhibit coronavirus growth</a>
-              </li>
-              <li><a
-                data-entities="SARS-CoV-2"
-                data-concepts="&quot;Incubation period&quot;"
-                href="#">Incubation period of coronavirus</a>
-              </li>
-              <li><a
-                data-concepts="Epidemiology"
-                href="#">How can we better collect and use public health surveillance data?</a>
-              </li>
-              <li><a
-                data-concepts="Mathematics,Time"
-                href="#">When will coronavirus cases likely peak?</a>
-              </li>
+            <ul class="nav nav-sidebar d-inline">
+                <li class="sidebar-menu">
+                    <a class="clearfix" href="#" id="concepts_link">
+                        <span>Concepts</span>
+                        <span class="badge float-right my-1" id="enriched_text_concepts_text_counter"></span>
+                    </a>
+                </li>
+                <li class="sidebar-menu">
+                    <a class="clearfix" href="#" id="entities_link">
+                        <span>Entities</span>
+                        <span class="badge float-right my-1" id="enriched_text_entities_text_counter"></span>
+                    </a>
+                </li>
             </ul>
-
-            <ul class="list-unstyled predefined">
-              <h5>Works in news collection only</h5>
-              <li><a
-                data-extra="enriched_text.semantic_roles.subject.text:&quot;early detection&quot;"
-                data-concepts="&quot;Polymerase chain reaction&quot;"
-                href="#">COVID-19 PCR tests</a>
-              <li>
-              <li><a
-                data-extra="enriched_text.relations.arguments.entities.type::&quot;HealthCondition&quot;,enriched_text.semantic_roles.action.verb.text:&quot;develop&quot;"
-                data-concepts="vaccine"
-                href="#">Development of COVID-19 attenuated virus vaccine</a>
-              </li>
-              <li><a
-                data-extra="enriched_text.semantic_roles.action.verb.text:&quot;develop&quot;,enriched_text.relations.arguments.entities.text:&quot;infectious disease&quot;"
-                href="#">Development of COVID-19 non-replicating viral vector vaccine</a>
-              </li>
-            </ul>
-          </div>
         </div>
+        <div class="col-sm-9 col-md-10 px-0">
+            <div class="container-fluid h-100">
+                <div class="row h-100">
+                    <div class="col-md-4 filter-col d-none">
+                        <div class="filter-section" id="concepts_section">
+                            <span class="filter-label">Concepts</span>
+                            <span class="ml-2"><a href="#">
+                                <i class="fa fa-question-circle filter-help"></i>
+                            </a></span>
+                            <span class="float-right">
+                                <a onclick="clearContainer('enriched_text_concepts_text_container')"  
+                                    href="#">Clear All</a>
+                            </span>
+                            
+                            <div class="input-group filter-input">
+                                <input id="enriched_text_concepts_text_filter" class="form-control py-2 border-right-0 border" type="search" placeholder="Enter concept search terms">
 
-        <div class="card panel-query mt-4">
-          <div class="card-header">
-            Entities
-          </div>
-          <div class="card-body">
-            <div class="form-group text-center">
-              <div class="droppable">
-                <textarea id="entities_query" class="form-control"
-                placeholder="[ Click here to enter entity search terms ]"></textarea>
-                <div id="enriched_text_entities_text"></div>
-              </div>
-              <button id="clear-entities-query" class="btn btn-primary" type="button">
-                Clear
-              </button>
-            </div>
+                                <span class="input-group-append">
+                                    <button id="enriched_text_concepts_text_append" class="btn btn-outline-secondary border-left-0 border filter-button" type="button">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            
+                            <div class="filter-box">
+                                <div class="card filter-card">
+                                    <div id="enriched_text_concepts_text_container" class="card-body">
+                                    </div>
+                                </div>
+                                
+                                <div class="container text-center">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="concepts-operator" id="concepts-operator-and" value="," checked>
+                                        <label class="form-check-label" for="concepts-operator-and">AND</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="concepts-operator" id="concepts-operator-or" value="|">
+                                        <label class="form-check-label" for="concepts-operator-or">OR</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="filter-label filter-heading">Common concepts</div>
+                            
+                            <div id="enriched_text_concepts_text_aggregate">
+                            </div>    
+                        </div>
+                        
+                        <div class="filter-section" id="entities_section">
+                            <span class="filter-label">Entities</span>
+                            <span class="ml-2"><a href="#">
+                                <i class="fa fa-question-circle filter-help"></i>
+                            </a></span>
+                            <span class="float-right">
+                                <a onclick="clearContainer('enriched_text_entities_text_container')" 
+                                href="#">Clear All</a>
+                            </span>
+                            
+                            <div class="input-group filter-input">
+                                <input id="enriched_text_entities_text_filter" class="form-control py-2 border-right-0 border" type="search" placeholder="Enter entity search terms">
+                                
+                                <span class="input-group-append">
+                                    <button id="enriched_text_entities_text_append" class="btn btn-outline-secondary border-left-0 border filter-button" type="button">
+                                        <i class="fa fa-plus"></i>             
+                                    </button>
+                                </span>
+                            </div>
+                            
+                            <div class="filter-box">
+                                <div class="card filter-card">
+                                    <div id="enriched_text_entities_text_container" class="card-body">
+                                    </div>
+                                </div>
+                                <div class="container text-center">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="entities-operator" id="entities-operator-and" value="," checked>
+                                        <label class="form-check-label" for="entities-operator-and">AND</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="entities-operator" id="entities-operator-or" value="|">
+                                        <label class="form-check-label" for="entities-operator-or">OR</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="filter-label filter-heading">Common entities</div>
+                            
+                            <div id="enriched_text_entities_text_aggregate">
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-8 results-col px-0">
+                        <div id="popular-searches" class="container-fluid w-100 h-100">
+                            <div class="row">
+                                <div class="col-md-6 px-0">
+                                    <div class="panel svg-container">
+                                        <svg width="506" height="735" viewBox="0 0 506 735" preserveAspectRatio="xMinYMin meet" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                          <path opacity="0.3" d="M173.58 591.668C173.902 577.633 174.993 553.398 177.738 527.054V472.088C177.738 460.095 163.343 452.1 134.652 450.101C105.961 448.102 0.479256 476.085 -20.617 505.068C-41.7132 534.05 -35.8062 553.039 -33.2747 581.022C-31.302 602.827 -28.1018 623.241 -26.6373 631.367C-26.5618 631.786 -26.4572 632.179 -26.3075 632.577C-20.0991 649.087 1.62573 681.17 40.984 681.96C90.771 682.96 94.1464 664.971 91.6149 647.981C89.9697 636.94 73.3641 633.065 60.7058 632.178C56.3817 631.876 52.7978 628.412 52.7978 624.077V572.912C52.7978 569.439 55.1036 566.401 58.4497 565.473C69.5489 562.395 94.464 555.379 110.014 550.195C115.312 548.429 121.246 552.356 121.312 557.94C121.541 577.069 121.698 602.813 121.15 608.005C120.306 616 119.462 656.975 173.468 655.976C227.474 654.977 214.817 617.999 206.378 608.005C201.45 602.169 190.525 600.238 181.812 599.88C177.317 599.695 173.477 596.165 173.58 591.668Z" fill="#4966B0"/>
+                                          <path d="M449.341 41.0103C410.864 16.2372 425.939 41.0103 355.962 41.0103C313.167 41.0103 293.007 49.1784 284.223 93.832C281.252 108.937 279.038 120.933 278.721 130.554C278.71 130.917 278.677 131.265 278.616 131.624C268.776 189.625 244.043 296.63 223.06 337.996C202.013 379.488 203 384.379 173 398.379C143 412.379 123.8 401.179 75 412.379C29.4956 422.822 -6.79211 444.384 -22.0259 455.837C-23.933 457.271 -24.9629 459.555 -24.8997 461.941L-19.0391 682.905C-19.0133 683.879 -18.8124 684.834 -18.4012 685.717C-10.6118 702.439 15.056 733.6 61 734.379C120 735.379 124 717.379 121 700.379C118.985 688.959 98.0282 685.201 82.8744 684.487C78.5575 684.284 75 680.821 75 676.499V625.507C75 621.921 77.4596 618.812 80.9522 617.995C94.3214 614.869 127.001 607.114 145.452 601.778C150.613 600.286 156.104 604.097 156.181 609.469C156.459 628.686 156.659 655.109 156 660.379C155 668.379 154 709.379 218 708.379C282 707.379 267 670.379 257 660.379C250.844 654.223 236.794 652.409 226.239 652.204C221.78 652.117 218.009 648.599 218.129 644.14C218.508 630.114 219.798 605.807 223.06 579.379C227.107 546.579 255.658 493.938 273 458.159C290.342 422.379 299 412.379 314.762 356.595C335.43 283.449 349.871 178.268 356.557 165.206C363.244 152.144 362.521 139.251 423.491 149.006C524.736 165.206 487.818 65.7833 449.341 41.0103Z" fill="#4966B0"/>
+                                          <circle cx="382.397" cy="83.6285" r="29.1951" stroke="white" stroke-width="3.71988"/>
+                                          <path d="M398.881 79.0599C397.838 71.9563 391.677 66.9779 385.12 67.9404" stroke="white" stroke-width="8" stroke-linecap="round"/>
+                                          <path d="M368.11 94.5027C370.615 101.231 377.681 104.81 383.892 102.497" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                                          <path d="M361.693 104.511L345.426 120.778" stroke="white" stroke-width="3.71988" stroke-linecap="round"/>
+                                          <path d="M439.759 113.458C444.018 117.968 458.1 126.537 480.349 124.733C502.598 122.929 505.153 110.952 503.65 105.19" stroke="white" stroke-width="3.71988" stroke-linecap="round"/>
+                                          <path d="M346.096 54.6911C346.892 50.754 350.895 42.5922 360.541 41.4417" stroke="white" stroke-width="3.71988" stroke-linecap="round"/>
+                                          <path d="M336.03 26.2654C332.522 16.2433 322.349 -2.4479 309.722 2.96404C297.094 8.37598 304.46 31.2765 309.722 42.0503C302.205 36.5381 285.067 27.1674 276.649 33.782C268.23 40.3966 285.669 59.589 295.44 68.3583C286.42 63.3472 266.576 56.3318 259.36 68.3583C252.144 80.3848 276.899 88.9036 290.178 91.6597C277.4 90.6575 251.693 91.359 251.092 102.183C250.491 113.007 276.899 118.719 290.178 120.223C275.646 116.464 246.282 112.405 245.079 126.236C243.876 140.067 269.633 147.533 282.662 149.537C271.638 146.28 248.687 142.923 245.079 155.551C241.471 168.179 264.622 176.848 276.649 179.604C269.132 174.342 252.295 167.728 245.079 183.362C237.863 198.997 257.105 210.422 267.629 214.18" stroke="#4966B0" stroke-width="3.71988"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 px-0">
+                                    <div class="panel">
+                                        <h2>List of popular searches</h2>
+                                        <ul class="predefined">
+                                            <li><a
+                                                data-entities="asymptomatic"
+                                                href="#">Patients who were asymptomatic</a>
+                                            </li>
+                                            <li><a
+                                                data-concepts="Immunology,&quot;Sensitivity and specificity&quot;"
+                                                href="#">Advances in diagnostics of coronavirus</a>
+                                            </li>
+                                            <li><a
+                                                data-concepts="Gene"
+                                                href="#">Studies about phenotypic change</a>
+                                            </li>
+                                            <li><a
+                                                data-concepts="Epidemiology,Demography"
+                                                href="#">Incubation period across different age groups</a>
+                                            </li>
+                                            <li><a
+                                                data-concepts="Temperature"
+                                                href="#">How does temperature and humidity affect the transmission of COVID-19</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="results-section d-none">
+                            <div id="results-passages" class="container-fluid px-0 d-none">
+                                <div class="results-label">Excerpts</div>  
 
-            <p>Entities are real-world objects such as persons, locations, products, and such.
-              Entities query can have operators that modify its behavior.
-              Below are examples that illustrate the available search operators:</p>
+                                <div id="passages-carousel" class="carousel" 
+                                    data-ride="carousel slide" data-interval="false">
+                                    
+                                    <div class="carousel-inner"></div> 
 
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Operator</th>
-                  <th>Finds Documents</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>bleomycin,parkin</td>
-                  <td>Containing both "bleomycin" and “parkin”.</td>
-                </tr>
-                <tr>
-                  <td>bleomycin|parkin</td>
-                  <td>Containing either "bleomycin" or “parkin” (or both).</td>
-                </tr>
-                <tr>
-                  <td>"Himalyan palm"</td>
-                  <td>Containing the exact phrase “Himalyan palm”.</td>
-                </tr>
-                <tr>
-                  <td>!wuhan</td>
-                  <td>Does not contain "wuhan".</td>
-                </tr>
-                <tr>
-                  <td>corona*</td>
-                  <td>Containing text starting with "corona".</td>
-                </tr>
-                <tr>
-                  <td>coronavirus^3</td>
-                  <td>Gives more weight to documents containing text "coronavirus".</td>
-                </tr>
-              </tbody>
-            </table>
-
-          </div>
-        </div>
-
-        <div class="card panel-query mt-4">
-          <div class="card-header">
-            Concepts
-          </div>
-          <div class="card-body">
-            <div class="form-group text-center">
-              <div class="droppable">
-                <textarea id="concepts_query" class="form-control"
-                placeholder="[ Click here to enter concept search terms  ]"></textarea>
-                <div id="enriched_text_concepts_text"></div>
-              </div>
-              <button id="clear-concepts-query" class="btn btn-primary" type="button">
-                Clear
-              </button>
-            </div>
-
-            <p>Concepts are words that may not occur in the document and represent abstract topics.
-              Concepts query can have operators that modify its behavior.
-              Below are examples that illustrate the available search operators:</p>
-
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Operator</th>
-                  <th>Finds Documents</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>DNA,protein</td>
-                  <td>Containing both "DNA" and “protein”.</td>
-                </tr>
-                <tr>
-                  <td>DNA|protein</td>
-                  <td>Containing either "DNA" or "protein" (or both).</td>
-                </tr>
-                <tr>
-                  <td>"amino acid"</td>
-                  <td>Containing the exact phrase “amino acid”.</td>
-                </tr>
-                <tr>
-                  <td>!RNA</td>
-                  <td>Does not contain "RNA".</td>
-                </tr>
-                <tr>
-                  <td>vaccin*</td>
-                  <td>Containing text starting with "vaccin".</td>
-                </tr>
-                <tr>
-                  <td>vaccine^3</td>
-                  <td>Gives more weight to documents containing text "vaccine".</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="card panel-query mt-4">
-          <div class="card-header">
-            Sentiment
-          </div>
-          <div class="card-body">
-            <div class="form-group">
-              <div class="droppable row text-center justify-content-center">
-                <div id="enriched_text_entities_sentiment_label" class="col-12">
+                                    <a class="carousel-control-prev" href="#passages-carousel" role="button" data-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#passages-carousel" role="button" data-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                    
+                                </div>
+                            </div>
+                        
+                            <div id="results-count" class="results-label"></div>
+                                <ul class="results-list">
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-
-        <div class="card panel-query my-4">
-          <div class="card-header">
-            Similarity
-          </div>
-          <div class="card-body">
-            <div class="form-group text-center">
-              <div class="droppable">
-                <textarea id="similarity_query" class="form-control" readonly></textarea>
-              </div>
-              <button id="clear-similarity" class="btn btn-primary" type="button">
-                Clear
-              </button>
-            </div>
-
-            <p>Rank documents by descending similarity to documents with listed IDs.
-              This feature is very experimental.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6">
-        <div class="card panel-filter">
-          <div class="card-header">
-            <!--
-            <img class="mr-2" src="images/with_watson.png" />
-            -->
-            <b>Passages</b>
-            <small>(most relevant only are shown)</small>
-          </div>
-          <div class="card-body">
-            <div class="excerpts list-group">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Enrichments Modal -->
-      <div class="modal" id="enrichments-modal">
-        <div class="modal-dialog">
+    </div>
+    
+    <!-- Enrichments Modal -->
+    <div class="modal" id="enrichments-modal">
+        <div class="modal-dialog modal-lg">
           <div class="modal-content">
 
             <!-- Modal body -->
             <div class="modal-body">
-              <div class="card bg-light text-dark mb-2">
+              <div id="concepts-card" class="card modal-card mb-2">
                 <div class="card-body">
                   <div class="card-title">
                     <h4>Concepts</h4>
-                    <small>Click to insert in Concepts box</small>
+                    <small>Click to insert in Concepts filter</small>
                   </div>
                   <div class="card-text concepts-list"></div>
                 </div>
               </div>
 
-              <div class="card bg-light text-dark mb-2">
+              <div id="entities-card" class="card modal-card mb-2">
                 <div class="card-body">
                   <div class="card-title">
                     <h4>Entities</h4>
-                    <small>Click to insert in Entities box</small>
+                    <small>Click to insert in Entities filter</small>
                   </div>
                   <div class="card-text entities-list"></div>
                 </div>
               </div>
 
-              <div class="card bg-light text-dark">
+              <div id="keywords-card" class="card modal-card">
                 <div class="card-body">
                   <div class="card-title">
                     <h4>Keywords</h4>
-                    <small>Click to insert in Query box</small>
+                    <small>Click to insert in Query field</small>
                   </div>
                   <div class="card-text keywords-list"></div>
                 </div>
@@ -489,15 +686,15 @@
 
             <!-- Modal footer -->
             <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary override" data-dismiss="modal">Close</button>
             </div>
 
           </div>
         </div>
-      </div>
-      <!-- Enrichments Modal -->
-
-      <!-- Feedback Modal -->
+    </div>
+    <!-- Enrichments Modal -->
+    
+    <!-- Feedback Modal -->
       <div class="modal" id="feedback-modal">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
@@ -537,479 +734,559 @@
         </div>
       </div>
       <!-- Feedback Modal -->
-
-    </div>
-  </div>
-
-  <script src="https://marketengine.parts/vendor/jquery/jquery.min.js"></script>
-  <script src="https://marketengine.parts/vendor/bootstrap/js/bootstrap.min.js"></script>
-
-  <script>
-    $('textarea.form-control').keyup(function(e) {
-      if (e.which == 13) {
-        $(this).val($(this).val().trim());
-      }
-    });
-
-    var hasNumbers = function(str) {
-      var regex = /\d/g;
-      return regex.test(str);
-    }
-
-    var addDocumentId = function(docId) {
-      docIds = [];
-      similarityQuery = $('#similarity_query').val();
-      if (similarityQuery) {
-        docIds = similarityQuery.split(',');
-        if (!docIds.includes(docId)) {
-          docIds.push(docId);
-        }
-        $('#similarity_query').val(docIds.join(','));
-      } else {
-        $('#similarity_query').val(docId);
-      }
-    }
-
-    var addDocSimilarity = function(docId, listGroupItem) {
-      $('<button>', {
-        class: 'btn btn-link',
-        text: 'Similarity',
-        click: function() {
-          addDocumentId(docId);
-        }
-      }).attr('title', 'Find similar documents to this one')
-        .appendTo(listGroupItem);
-    };
-
-    var containerTextAreas = {
-      'enriched_text_concepts_text': $('#concepts_query'),
-      'enriched_text_entities_text': $('#entities_query')
-    };
-
-    var appendText = function(textArea, text) {
-      val = textArea.val();
-      if (val) {
-        tokens = val.split(',');
-        if (!tokens.includes(text)) {
-          tokens.push(text);
-        }
-        textArea.val(tokens.join(','));
-      } else {
-        textArea.val(text);
-      }
-    };
-
-    var addBadge = function(container, id, label, text) {
-      $('<span>', {
-        class: 'badge badge-primary mx-2 clickable field',
-        text: label,
-        click: function() {
-          var textArea = containerTextAreas[id];
-          if (textArea) {
-            appendText(textArea, text);
-          }
-        }
-      }).appendTo(container);
-    };
     
-    var addKeyword = function(container, textArea, label, text) {
-      $('<span>', {
-        class: 'badge badge-info mx-2 clickable field',
+</div>
+
+<script>
+var showFilters = function(show) {
+    if (show) {
+        $('.results-col').removeClass('col-md-12');
+        $('.results-col').addClass('col-md-8');
+        $('.filter-col').removeClass('d-none');
+    } else {
+        $('.results-col').removeClass('col-md-8');
+        $('.results-col').addClass('col-md-12');
+        $('.filter-col').addClass('d-none');
+    }
+};
+showFilters(false);
+
+$('.nav li').click(function () {
+    var menuItem = $(this);
+    menuItem.siblings().removeClass('active');
+    menuItem.toggleClass('active');
+    
+    if (menuItem.hasClass('active')) {
+        showFilters(true);
+    } else {
+        showFilters(false);
+    }
+});
+
+var selectedCollection = 'medRxiv';
+
+var collections = {
+  "medRxiv": "https://dinosars.marketengine.parts/biorxiv.php",
+  "News": "https://dinosars.marketengine.parts/news.php"
+};
+
+$('#entities_section').hide();
+$('#concepts_section').show();
+
+var clearContainer = function(containerName) {
+    $('#' + containerName).empty();
+};
+
+var appendText = function(container, text) {
+    if (container.find("span:contains('" + text + "')").length) {
+        return;
+    }
+
+    var badge = $('<span>', {
+        class: 'badge filter-item mx-2 clickable field',
+        text: text
+    }).appendTo(container);
+    
+    badge.click(function() {
+        badge.remove();
+    });
+};
+
+var addBadge = function(aggregate, label, container, text) {
+    $('<span>', {
+        class: 'badge filter-item mx-2 clickable field',
         text: label,
         click: function() {
-          if (textArea) {
-            textValue = textArea.val();
-            if (!textValue.includes(text)) {
-              newValue = textValue + ' ' + text;
-              textArea.val(newValue.trim());
-            };
-          }
+            appendText(container, text);
         }
-      }).appendTo(container);
-    };
+    }).appendTo(aggregate);
+};
 
-    var setEnrichedText = function(enrichedText) {
-      $('<button>', {
-        class: 'btn btn-link',
-        text: 'Metadata',
-        click: function() {
-          if (!enrichedText) {
-            return;
-          }
+$('#enriched_text_concepts_text_append').click(function(e) {
+    container = $('#enriched_text_concepts_text_container');
+    text = $('#enriched_text_concepts_text_filter').val();
+    appendText(container, text);
+});
 
-          if (enrichedText.concepts) {
-            conceptsList = $('.concepts-list');
-            conceptsList.empty();
-            concepts = enrichedText.concepts;
-            for (var i=0; i<concepts.length; i++) {
-              addBadge(conceptsList, 'enriched_text_concepts_text',
+$('#enriched_text_entities_text_append').click(function(e) {
+    container = $('#enriched_text_entities_text_container');
+    text = $('#enriched_text_entities_text_filter').val();
+    appendText(container, text);
+});
+
+var hasLetters = function(str) {
+  var regex = /[A-Za-z]+/g;
+  return regex.test(str);
+};
+
+var showAggregations = function(aggregations) {
+    if (aggregations) {
+        for (var i=0; i<aggregations.length; i++) {
+            aggregation = aggregations[i];
+            var id = aggregation.field;
+            id = id.replace(/\./g, '_');
+            
+            container = $('#' + id + '_container');
+            if (!container) {
+              continue;
+            }
+            container.empty();
+            
+            filter = $('#' + id + '_filter');
+            if (!filter) {
+              continue;
+            }
+            
+            counter = $('#' + id + '_counter');
+            if (!counter) {
+              continue;
+            }
+            totalResults = 0;
+            
+            aggregate = $('#' + id + '_aggregate');
+            if (!aggregate) {
+              continue;
+            }
+            aggregate.empty();
+            
+            results = aggregation.results;
+            for (var j=0; j<results.length; j++) {
+                var result = results[j];
+                if (!hasLetters(result.key)) {
+                    continue;
+                }
+                
+                totalResults = totalResults + result.matching_results;
+                label = result.key + ' (' + result.matching_results + ')';
+                addBadge(aggregate, label, container, result.key);
+            }
+            counter.text(totalResults);
+        }            
+    }
+};
+
+var addEnrichmentField = function(fieldContainer, filterContainer, label, text) {
+  $('<span>', {
+    class: 'badge mx-2 filter-item',
+    text: label,
+    click: function() {
+        appendText(filterContainer, text);
+    }
+  }).appendTo(fieldContainer);
+};
+
+var addKeywordField = function(container, textArea, label, text) {
+  $('<span>', {
+    class: 'badge mx-2 filter-item',
+    text: label,
+    click: function() {
+      if (textArea) {
+        textValue = textArea.val();
+        if (!textValue.includes(text)) {
+          newValue = textValue + ' ' + text;
+          textArea.val(newValue.trim());
+        };
+      }
+    }
+  }).appendTo(container);
+};
+
+var addEnrichments = function(enrichedText, cardBody) {
+    if (!enrichedText) {
+        return;
+    }
+    
+    if (enrichedText.concepts && enrichedText.concepts.length > 0) {
+        cardBody.append('<div><strong>Concepts</strong></div>');    
+        var fieldContainer = $('<div>').appendTo(cardBody);
+        filterContainer = $('#enriched_text_concepts_text_container');
+        concepts = enrichedText.concepts;
+        for (var i=0; i<concepts.length; i++) {
+            addEnrichmentField(fieldContainer, filterContainer,
                 concepts[i].text, concepts[i].text);
+        }
+    }
+    
+    if (enrichedText.entities && enrichedText.entities.length > 0) {
+        duplicates = {};
+        entities = enrichedText.entities;
+        uniqueEntities = [];
+        for (var i=0; i<entities.length; i++) {
+            if (!hasLetters(entities[i].text)) {
+                continue;
             }
-          }
-
-          if (enrichedText.entities) {
-            entitiesList = $('.entities-list');
-            entitiesList.empty();
-            duplicates = {};
-            entities = enrichedText.entities;
-            for (var i=0; i<entities.length; i++) {
-              if (hasNumbers(entities[i].text)) {
+            
+            if (duplicates[entities[i].text]) {
                 continue;
-              }
-
-              if (duplicates[entities[i].text]) {
-                continue;
-              } else {
+            } else {
                 duplicates[entities[i].text] = true;
-              }
-
-              addBadge(entitiesList, 'enriched_text_entities_text',
-                entities[i].text, entities[i].text);
             }
-          }
-
-          if (enrichedText.keywords) {
-            textQuery = $('#query');
-            keywordsList = $('.keywords-list');
-            keywordsList.empty();
-            keywords = enrichedText.keywords;
-            for (var i=0; i<keywords.length; i++) {
-              addKeyword(keywordsList, textQuery, 
+            uniqueEntities.push(entities[i].text);
+        }
+        
+        if (uniqueEntities.length > 0) {
+            cardBody.append('<div><strong>Entities</strong></div>');    
+            var fieldContainer = $('<div>').appendTo(cardBody);
+            filterContainer = $('#enriched_text_entities_text_container');
+        
+            for (var i=0; i<uniqueEntities.length; i++) {
+                addEnrichmentField(fieldContainer, filterContainer,
+                uniqueEntities[i], uniqueEntities[i]);
+            }
+        }
+    }
+    
+    if (enrichedText.keywords && enrichedText.keywords.length > 0) {
+        textQuery = $('#search-input');
+        cardBody.append('<div><strong>Keywords</strong></div>');    
+        var fieldContainer = $('<div>').appendTo(cardBody);        
+        keywords = enrichedText.keywords;
+        for (var i=0; i<keywords.length; i++) {
+            addKeywordField(fieldContainer, textQuery, 
                 keywords[i].text, 
                 keywords[i].text);
+        }
+    }    
+};
+
+var findEntities = function(enrichedField, types) {
+    var entityList = [];
+    if (enrichedField && enrichedField.entities) {
+        entities = enrichedField.entities;
+        for (var i=0; i<entities.length; i++) {
+            entity = entities[i];
+            if (types.includes(entity.type)) {
+                entityList.push(entity.text);
+            } else if (entity.disambiguation && entity.disambiguation.subtype) {
+                subtypes = entity.disambiguation.subtype;                
+                for (var j=0; j<subtypes.length; j++) {
+                    if (types.includes(subtypes[j])) {
+                        entityList.push(entity.text);
+                        break;
+                    }
+                }                                    
             }
-          }
         }
-      }).attr('data-toggle', 'modal')
-        .attr('data-target', '#enrichments-modal')
-        .appendTo(listGroupItem);
-    };
+    }    
+    return entityList;
+};
 
-    $('.feedback-submit').on('click', function (e) {
-      $.ajax({
-        url: 'feedback.php',
-        type: 'post',
-        data: {
-          email: $('#sender-email').val(),
-          name: $('#sender-name').val(),
-          message: $('#sender-message').val()
+var diseaseTypes = ["CauseOfDeath", "Disease", "DiseaseOrMedicalCondition", "InfectiousDisease", "RiskFactor", "DiseaseCause", "Symptom"];
+var getDiseases = function(enrichedTitle, enrichedText) {
+    var diseases = [];
+    diseases.push.apply(diseases, findEntities(enrichedTitle, diseaseTypes));
+    diseases.push.apply(diseases, findEntities(enrichedText, diseaseTypes));
+    
+    var unique = [];
+    $.each(diseases, function(i, el){
+        if ($.inArray(el, unique) === -1) {
+            unique.push(el);
+        }    
+    });
+    return unique.join(', ');
+};
+
+var treatmentTypes = ["Drug"];
+var getTreatments = function(enrichedTitle, enrichedText) {
+    var treatments = [];
+    treatments.push.apply(treatments, findEntities(enrichedTitle, treatmentTypes));
+    treatments.push.apply(treatments, findEntities(enrichedText, treatmentTypes));
+    
+    var unique = [];
+    $.each(treatments, function(i, el){
+        if ($.inArray(el, unique) === -1) {
+            unique.push(el);
+        }    
+    });
+    return unique.join(', ');
+};
+
+var showPassages = function(resultSet, passages) {
+    $('#results-passages').removeClass('d-none');
+    var tableData = [];
+    var hasDisease = false;
+    var hasTreatment = false;
+    for (var i=0; i<passages.length; i++) {
+        passage = passages[i];
+        doc = resultSet[passage.document_id];
+        if (!doc) {
+            continue;
         }
-      }).always(function() {
-        $('#feedback-modal').modal('hide');
-      });
-    });
-
-    $('#feedback-link').click(function() {
-      $('#feedback-modal').modal('show');
-    });
-
-    $('#clear-entities-query').click(function() {
-      $('#entities_query').val('');
-    });
-
-    $('#clear-concepts-query').click(function() {
-      $('#concepts_query').val('');
-    });
-
-    var stringHash = function(string) {
-        var hash = 0;
-        if (string.length == 0) return hash;
-
-        for (i = 0; i < string.length; i++) {
-          char = string.charCodeAt(i);
-          hash = ((hash << 5) - hash) + char;
-          hash = hash & hash;
+        
+        var tableRow = {
+            url: doc.url,
+            title: doc.title,
+            text: passage.passage_text
+        };
+        
+        var diseases = getDiseases(doc.enriched_title, doc.enriched_text)
+        if (diseases && diseases.length > 0) {
+            hasDisease = true;
         }
-        return Math.abs(hash);
-    };
+        tableRow['diseases'] = diseases;
+        
+        var treatments = getTreatments(doc.enriched_title, doc.enriched_text);
+        if (treatments && treatments.length > 0) {
+            hasTreatment = true;
+        }
+        tableRow['treatments'] = treatments;
+        tableData.push(tableRow);    
+    }
 
-    var runSearch = function(caller, endpoint, filterOperator) {
-      caller.attr('disabled', true);
-      $('#watson_brand').attr('src', 'images/watson_think.gif');
+    var carouselInner = $('#passages-carousel .carousel-inner');
+    carouselInner.empty();
+    
+    for (var i=0; i<tableData.length; i++) {
+        var doc = tableData[i];
+        var carouselItem;
+        if (i > 0) {
+            carouselItem = $('<div>')
+                .addClass('carousel-item')
+                .appendTo(carouselInner);     
+        } else {
+            carouselItem = $('<div>')
+                .addClass('carousel-item active')
+                .appendTo(carouselInner); 
+        }
+        
+        carouselCaption = $('<div>')
+            .addClass('carousel-caption')
+            .appendTo(carouselItem);
+            
+        resultsItem = $('<div>', {
+            'class': 'card results-item'
+        }).appendTo(carouselCaption);
+                
+        cardBody = $('<div>', {
+            'class': 'card-body'
+        }).appendTo(resultsItem);
+                
+        cardBody.append('<a href="' + doc.url + '" class="passage-title" target="_blank">' + doc.title + '</a>');
+        cardBody.append('<p class="passage-text card card-body bg-light">' + doc.text + '</p>');
+        
+        if (hasDisease && doc.diseases.length > 0) {
+            cardBody.append('<p><strong>Symptoms:</strong> ' + doc.diseases + '</p>');
+        }
+        
+        if (hasTreatment && doc.treatments.length > 0) {
+            cardBody.append('<p><strong>Treatments:</strong> ' + doc.treatments + '</p>');
+        }
+    }
+};
 
-      var filterArray = [];
-      var entitiesQuery = $('#entities_query').val();
-      if (entitiesQuery) {
-        filterArray.push("enriched_text.entities.text:" + entitiesQuery);
-      }
+var toggleExcerpt = function(toggler, excerpt) {
+    toggler.click(function() {
+        excerpt.toggle();
+    });
+};
 
-      var conceptsQuery = $('#concepts_query').val();
-      if (conceptsQuery) {
-        filterArray.push("enriched_text.concepts.text:" + conceptsQuery);
-      }
-
-      var filter = "";
-      if (filterArray.length > 0) {
+var search = function(caller, endpoint, filterOperator) {
+    $('#popular-searches').hide();
+    $('.results-section').removeClass('d-none');
+    $(".results-section").LoadingOverlay("show");
+    $('#results-passages').addClass('d-none');
+    $('#results-count').text('');
+    $('.results-list').empty();
+    showFilters(false);
+    $('.nav li').removeClass('active');
+    
+    var filterArray = [];
+    var conceptArray = [];
+    $('#enriched_text_concepts_text_container').find('span.badge.filter-item').each(function() {
+        conceptArray.push($(this).text());
+    });
+    
+    if (conceptArray.length > 0) {
+        var conceptsOperator = $('input[name=concepts-operator]:checked').val();
+        if (!conceptsOperator) {
+            conceptsOperator = filterOperator;
+        }
+        filterArray.push("enriched_text.concepts.text:" + conceptArray.join(conceptsOperator));
+    }
+    
+    var entitiesArray = [];
+    $('#enriched_text_entities_text_container').find('span.badge.filter-item').each(function() {
+        entitiesArray.push($(this).text());
+    });
+    
+    if (entitiesArray.length > 0){
+        var entitiesOperator = $('input[name=entities-operator]:checked').val();
+        if (!entitiesOperator) {
+            entitiesOperator = filterOperator;
+        }
+        filterArray.push("enriched_text.entities.text:" + entitiesArray.join(entitiesOperator));
+    }
+    
+    var filter = "";
+    if (filterArray.length > 0) {
         filter = filterArray.join(filterOperator);
-      }
-
-      var extra = $('#extra_query').val();
-      if (extra) {
-        filter = filter + ',' + extra;
-      }
-
-      var similar = $('#similarity_query').val();
-      var query = $('#query').val();
-      $.ajax({
+    }
+    
+    var query = $("#search-input").val();
+    var similarity = null;
+    $.ajax({
         url: endpoint,
         method: 'GET',
         data: {
           q: query,
           filter: filter,
-          similar: similar
+          similar: similarity
         },
         dataType: "json",
         timeout: 30000
-      }).done(function(response) {
-        if (!response) {
-          return;
+    }).done(function(response) {
+        if (response.matching_results) {
+            $('#results-count').text('Results (' + response.matching_results + ' documents)');
         }
-
-        if (response.input) {
-          input = response.input;
-          if (input) {
-            if (input.concepts && input.concepts.length > 0) {
-              $('#concepts_query').val(input.concepts.join(','));
-            }
-
-            if (input.entities && input.entities.length > 0) {
-              $('#entities_query').val(input.entities.join(','));
-            }
-          }
-        }
-
-        var results = null;
-        var documents = {};
-        if (response.results) {
-          results = response.results;
-          for (var i = 0; i < results.length; i++) {
-            result = results[i];
-            if (!documents[result.id]) {
-              documents[result.id] = {
-                "paper_id": result.paper_id,
-                "url": result.url,
-                "title": result.title,
-                "authors": (result.authors || result.author),
-                "enriched_text": result.enriched_text
-              };
-            }
-          }
-        }
-
-        var matchingResults = response.matching_results;
-        $('#matching_results').text(matchingResults + ' hits');
-
-        if (response.passages && response.passages.length > 0) {
-          excerpts = $('.excerpts');
-          excerpts.empty();
-          passages = response.passages;
-          previousPaper = null;
-          for (var i = 0; i < passages.length; i++) {
-            passage = passages[i];
-            if (!documents[passage.document_id]) {
-              continue;
-            }
-            doc = documents[passage.document_id];
-
-            listGroupItem = $('<div>', {
-              'class': 'list-group-item list-group-item-action flex-column align-items-start'
-            }).appendTo(excerpts);
-            setEnrichedText(doc.enriched_text);
-            addDocSimilarity(passage.document_id, listGroupItem);
-
-            titleContainer = $('<div>', {
-              'class': 'd-flex w-100 justify-content-between'
-            }).appendTo(listGroupItem);
-
-            title = doc.title;
-            authors = doc.authors;
-            if (previousPaper && previousPaper === doc.paper_id) {
-              title = "Same source as above";
-              authors = "";
-            }
-            previousPaper = doc.paper_id;
-
-            $('<h5>', {'class': 'mb-1'})
-              .html(title)
-              .appendTo(titleContainer);
-
-            $('<strong>')
-              .html(authors)
-              .appendTo(listGroupItem);
-
-            $('<p>', {'class': 'mb-1'})
-              .html(passage.passage_text + '..')
-              .appendTo(listGroupItem);
-
-            $('<small>')
-              .html("Paper ID: " + doc.paper_id)
-              .appendTo(listGroupItem);
-          }
-        } else if (results) {
-          excerpts = $('.excerpts');
-          excerpts.empty();
-          resultCount = Math.min(results.length, 5);
-          previousPaper = null;
-          duplicatePapers = {};
-
-          for (var i = 0; i < resultCount; i++) {
-            doc = results[i];
-            url = doc.url;
-            title = doc.title;
-            authors = (doc.authors || doc.author);
-
-            if (!doc.paper_id) {
-              doc.paper_id = stringHash(title);
-            }
-
-            if (duplicatePapers[doc.paper_id]) {
-              continue;
-            } else {
-              duplicatePapers[doc.paper_id] = true;
-            }
-
-            listGroupItem = $('<div>', {
-              'class': 'list-group-item list-group-item-action flex-column align-items-start'
-            }).appendTo(excerpts);
-            setEnrichedText(doc.enriched_text);
-            addDocSimilarity(doc.id, listGroupItem);
-
-            titleContainer = $('<div>', {
-              'class': 'd-flex w-100 justify-content-between'
-            }).appendTo(listGroupItem);
-
-            if (previousPaper && previousPaper === doc.paper_id) {
-              title = "Same source as above";
-              authors = "";
-            }
-            previousPaper = doc.paper_id;
-
-            if (url) {
-              titleLink = '<h5><a target="_blank" href="' + url + '">' + title + '</a></h5>';
-              titleContainer.append(titleLink);
-            } else {
-              $('<h5>', {'class': 'mb-1'})
-                .html(title)
-                .appendTo(titleContainer);
-            }
-
-            $('<strong>')
-              .html(authors)
-              .appendTo(listGroupItem);
-
-            $('<p>', {'class': 'mb-1'})
-              .html(doc.text)
-              .appendTo(listGroupItem);
-
-            $('<small>')
-              .html("Paper ID: " + doc.paper_id)
-              .appendTo(listGroupItem);
-          }
-        }
-
-        if (response.aggregations) {
-          aggregations = response.aggregations;
-          for (var i = 0; i < aggregations.length; i++) {
-            aggregation = aggregations[i];
-            var id = aggregation.field;
-            id = id.replace(/\./g, '_');
-            container = $('#' + id);
-
-            if (!container) {
-              continue;
-            }
-
-            sentimentContainer = null;
-            sentiments = {
-              'positive': 0,
-              'neutral': 0,
-              'negative': 0
-            };
-            container.empty();
-            aggregationResults = aggregation.results;
-            for (var j = 0; j < aggregationResults.length; j++) {
-              var result = aggregationResults[j];
-              if (id === 'enriched_text_entities_sentiment_label') {
-                sentimentContainer = container;
-                sentiments[result.key] = result.matching_results;
-              } else {
-                if (hasNumbers(result.key)) {
-                  continue;
+        
+        var resultSet;
+        if (response.results && response.results.length > 0) {
+            resultSet = {};
+            var resultsList = $('.results-list');
+            resultsList.empty();
+            var results = response.results;
+            for (var i=0; i<results.length; i++) {
+                var result = results[i];
+                resultSet[result.id] = result;
+                listItem = $('<li>').appendTo(resultsList);
+                
+                resultsItem = $('<div>', {
+                    'class': 'card results-item'
+                }).appendTo(listItem);
+                
+                cardBody = $('<div>', {
+                    'class': 'card-body'
+                }).appendTo(resultsItem);
+                
+                cardBody.append('<a href="' + result.url + '" class="title" target="_blank">' + result.title + '</a>');
+                
+                var author = result.author;
+                if (author) {
+                    if ($.isArray(author)) {
+                        authors = author.map(function(e) {
+                            return e.author_name;
+                        }).join(', ');
+                        cardBody.append('<p class="author">' + authors + '</p>');
+                    } else {
+                        cardBody.append('<p class="author">' + author + '</p>');
+                    }
                 }
+                
+                if (result.highlight) {
+                    highlight = result.highlight;
+                    if (highlight.text && highlight.text.length > 0) {
+                        cardBody.append('<p class="highlight">' + 
+                            highlight.text[0] + '</p>');
+                    } 
+                }                    
+                          
+                addEnrichments(result.enriched_text, cardBody);
+                          
+                footer = $('<div>', {
+                    'class': 'footer'
+                }).appendTo(listItem);
+  
+                $('<span>').text(result.publication_date)
+                    .appendTo(footer);  
 
-                label = result.key + ' (' + result.matching_results + ')';
-                addBadge(container, id, label, result.key);
-
-              }
+                $('<span>', {
+                    'class': 'ml-2'
+                }).text(result.site)
+                    .appendTo(footer);         
             }
-
-            if (sentimentContainer) {
-              sentimentTotal = 0;
-              for (key in sentiments) {
-                if (sentiments.hasOwnProperty(key)) {
-                  sentimentTotal = sentimentTotal + sentiments[key];
-                }
-              }
-
-              for (key in sentiments) {
-                if (sentiments.hasOwnProperty(key)) {
-                  sentiments[key] = Math.round(100.0 * sentiments[key] / sentimentTotal);
-                }
-              }
-
-              sentimentContainer.append('<span class="badge badge-success"><div>' +
-                sentiments.positive + '%</div><div>Positive</div></span>');
-              sentimentContainer.append('<span class="badge badge-warning text-white mx-2"><div>' +
-                sentiments.neutral + '%</div><div>Neutral</div></span>');
-              sentimentContainer.append('<span class="badge badge-danger"><div>' +
-                sentiments.negative + '%</div><div>Negative</div></span>');
-            }
-          }
+        } else {
+            $('#results-count').text('No results found');
         }
-      }).always(function() {
-        $('#similarity_query').val('');
-        $('#extra_query').val('');
-        caller.attr('disabled', false);
-        $('#watson_brand').attr('src', 'images/watson.png');
-      });
-    };
-
-    $('#search-button').click(function(e) {
-      e.preventDefault();
-      runSearch($(this), 'query.php', '|');
+        
+        showAggregations(response.aggregations);
+        
+        if (resultSet && response.passages && response.passages.length > 0) {
+            showPassages(resultSet, response.passages);
+        }
+    }).always(function() {        
+        $(".results-section").LoadingOverlay("hide", true);
     });
+};
 
-    $('#search-news').click(function(e) {
-      e.preventDefault()
-      runSearch($(this), 'news.php', ',');
-    });
+$(".search-button").click(function() {  
+    search($(this), collections[selectedCollection], ',');
+});
 
-    $('#clear-similarity').click(function() {
-      $('#similarity_query').val('');
-    });
+$('#search-input').keypress(function(event){
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if(keycode == '13'){
+        search($(this), collections[selectedCollection], ',');
+    }
+});
 
-    $('.predefined a').click(function(e) {
-      e.preventDefault();
-      extraData = $(this).attr("data-extra");
-      if (extraData) {
-        $('#extra_query').val(extraData);
-      }
+$("#concepts_link").click(function() {  
+    $('#entities_section').hide();
+    $('#concepts_section').show();
+});
 
-      conceptsData = $(this).attr("data-concepts");
-      if (conceptsData) {
-        $('#concepts_query').val(conceptsData);
-      }
+$("#entities_link").click(function() {  
+    $('#entities_section').show();
+    $('#concepts_section').hide();
+});
 
-      entitiesData = $(this).attr("data-entities");
-      if (entitiesData) {
-        $('#entities_query').val(entitiesData);
-      }
+$(".select-collection .dropdown-menu li").on("click", function(event){
+    selectedCollection = $(event.target).text();
+    $('#search_concept').text(selectedCollection);
+});
 
-      query = $(this).text();
-      $('#query').val(query);
-    });
-  </script>
+$('#popular-searches ul.predefined a').click(function(e) {
+  e.preventDefault();
+  
+  conceptsData = $(this).attr("data-concepts");
+  if (conceptsData) {
+    terms = conceptsData.split(',');
+    for (var i=0; i<terms.length; i++) {
+        appendText($('#enriched_text_concepts_text_container'), terms[i]);
+    }
+  }
+
+  entitiesData = $(this).attr("data-entities");
+  if (entitiesData) {
+    terms = entitiesData.split(',');
+    for (var i=0; i<terms.length; i++) {
+        appendText($('#enriched_text_entities_text_container'), terms[i]);
+    }
+  }
+
+  query = $(this).text();
+  $('#search-input').val(query);
+});
+
+$('#popular-searches').click(function() {
+    showFilters(false);
+    $('.nav li').removeClass('active');
+});
+
+$('.results-section').click(function() {
+    showFilters(false);
+    $('.nav li').removeClass('active');
+});
+
+$('.feedback-submit').on('click', function (e) {
+  $.ajax({
+    url: 'https://dinosars.marketengine.parts/feedback.php',
+    type: 'post',
+    data: {
+      email: $('#sender-email').val(),
+      name: $('#sender-name').val(),
+      message: $('#sender-message').val()
+    }
+  }).always(function() {
+    $('#feedback-modal').modal('hide');
+  });
+});
+
+$('#feedback-link').click(function() {
+  $('#feedback-modal').modal('show');
+});
+
+</script>
 
 </body>
-
 </html>
+
