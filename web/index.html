@@ -609,6 +609,18 @@
                                                 data-concepts="Temperature"
                                                 href="#">How does temperature and humidity affect the transmission of COVID-19</a>
                                             </li>
+                                            <li><a
+                                                data-concepts="Mammal"
+                                                href="#">Can domesticated and farm animals be infected and transmit the disease</a>
+                                            </li>
+                                            <li><a
+                                                data-concepts="Mathematical model"
+                                                href="#">Predictive models of transmission</a>
+                                            </li>
+                                            <li><a
+                                                data-concepts="Personal protective equipment"
+                                                href="#">Effectiveness of personal protective equipment</a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -1158,7 +1170,11 @@ var search = function(caller, endpoint, filterOperator) {
                     'class': 'card-body'
                 }).appendTo(resultsItem);
                 
-                cardBody.append('<a href="' + result.url + '" class="title" target="_blank">' + result.title + '</a>');
+                title = result.title;
+                if (result.site) {
+                    title = title + ' (' + result.site + ')';
+                }
+                cardBody.append('<a href="' + result.url + '" class="title" target="_blank">' + title + '</a>');
                 
                 var author = result.author;
                 if (author) {
@@ -1187,12 +1203,7 @@ var search = function(caller, endpoint, filterOperator) {
                 }).appendTo(listItem);
   
                 $('<span>').text(result.publication_date)
-                    .appendTo(footer);  
-
-                $('<span>', {
-                    'class': 'ml-2'
-                }).text(result.site)
-                    .appendTo(footer);         
+                    .appendTo(footer);           
             }
         } else {
             $('#results-count').text('No results found');
