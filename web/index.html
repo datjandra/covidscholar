@@ -13,6 +13,7 @@
   <style>
     body {
         padding-top: 55px;
+        overflow: hidden;
     }
   
     .white-background {
@@ -185,6 +186,8 @@
     .results-col {
         background-color: #93B1EB;
         color: #fff;
+        overflow-y: scroll;
+        height: calc(100vh - 200px);
     }
     
     .results-section {
@@ -790,6 +793,19 @@ var clearContainer = function(containerName) {
 };
 
 var appendText = function(container, text) {
+    if (container.attr('id').indexOf("concepts") >= 0) {
+        $('#entities_link').parent().removeClass('active');
+        $('#concepts_link').parent().addClass('active');
+        showConcepts();
+        showFilters(true);
+    }
+    else if (container.attr('id').indexOf("entities") >= 0) {
+        $('#concepts_link').parent().removeClass('active');
+        $('#entities_link').parent().addClass('active');
+        showEntities();
+        showFilters(true);
+    }
+
     if (container.find("span:contains('" + text + "')").length) {
         return;
     }
@@ -881,8 +897,9 @@ var addEnrichmentField = function(fieldContainer, filterContainer, label, text) 
   $('<span>', {
     class: 'badge mx-2 filter-item',
     text: label,
-    click: function() {
+    click: function(e) {
         appendText(filterContainer, text);
+        e.stopPropagation();
     }
   }).appendTo(fieldContainer);
 };
@@ -1231,14 +1248,22 @@ $('#search-input').keypress(function(event){
 });
 
 $("#concepts_link").click(function() {  
-    $('#entities_section').hide();
-    $('#concepts_section').show();
+    showConcepts();
 });
 
 $("#entities_link").click(function() {  
+    showEntities();
+});
+
+var showConcepts = function() {
+    $('#entities_section').hide();
+    $('#concepts_section').show();
+}
+
+var showEntities = function() {
     $('#entities_section').show();
     $('#concepts_section').hide();
-});
+}
 
 $(".select-collection .dropdown-menu li").on("click", function(event){
     selectedCollection = $(event.target).text();
