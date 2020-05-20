@@ -910,11 +910,7 @@ var addKeywordField = function(container, textArea, label, text) {
     text: label,
     click: function() {
       if (textArea) {
-        textValue = textArea.val();
-        if (!textValue.includes(text)) {
-          newValue = textValue + ' ' + text;
-          textArea.val(newValue.trim());
-        };
+        textValue = textArea.val(text);
       }
     }
   }).appendTo(container);
@@ -1164,8 +1160,8 @@ var search = function(caller, endpoint, filterOperator) {
         dataType: "json",
         timeout: 30000
     }).done(function(response) {
-        if (response.matching_results) {
-            $('#results-count').text('Results (' + response.matching_results + ' documents)');
+        if (response.matching_results && response.results) {
+            $('#results-count').text('Showing ' +  response.results.length + ' of ' + response.matching_results + ' results');
         }
         
         var resultSet;
