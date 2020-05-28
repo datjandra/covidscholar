@@ -12,7 +12,6 @@
   <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
   <style>
     body {
-        padding-top: 55px;
         overflow: hidden;
     }
   
@@ -21,7 +20,7 @@
     }
   
     .navbar-light .navbar-brand {
-        color: #5375EF;
+        color: white;
     }
     
     .navbar-light .nav-item .nav-link {
@@ -404,86 +403,122 @@
     .passage-text {
         margin-top: 1rem;
     }
+
+    .refine-tabs {
+        float: left;
+        position: relative;
+        top: 20px;
+    }
+
+    .refine-link {
+        color: white;
+        padding-right: 20px;
+        padding-bottom: 20px;
+    }
+
+    .refine-link:hover {
+        color: white;
+    }
+
+    .refine-link.active {
+        background-color: #DCE4FF   !important;
+        color: rgba(46, 41, 61, 0.7)    !important;
+        font-weight: bold;
+    }
+
+    .jumbotron {
+        padding-top: 0px;
+        padding-bottom: 4rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    .refine-badge {
+        margin-left: 20px;
+        background-color: white;
+        color: rgba(46, 41, 61, 0.7);
+    }
   </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-sm navbar-light fixed-top bg-light white-background">
-<a class="navbar-brand" href="index.html">DinoSARS</a>
-<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-  <span class="navbar-toggler-icon"></span>
-</button>
-<div class="collapse navbar-collapse" id="navbarCollapse">
-  <ul class="navbar-nav mr-auto">
-    <!--
-    <li class="nav-item">
-      <a class="nav-link" href="#">How to use</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Methodology</a>
-    </li>
-    -->
-  </ul>
-  
-  <!--
-  <button class="btn btn-outline-primary override mx-2">Feedback</button>
-  -->
-  
-  <button id="feedback-link" class="btn btn-primary override mx-2">Feedback</button>
-</div>
-</nav>
-
 <div class="jumbotron text-center search-section">
-    <h3 class="text-white">Understand the latest research data to stomp out SARS-CoV-2</h3>
-    <div class="input-group">
-        <div class="input-group-btn select-collection">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                <span id="search_concept">Select a Collection</span> <span class="caret"></span>
+    <div>
+        <nav class="navbar navbar-expand-sm navbar-light">
+            <a class="navbar-brand" href="index.html">DinoSARS</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
             </button>
-            <ul class="dropdown-menu" role="menu">
-              <li>medRxiv</li>
-              <li>News</li>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <!--
+                <li class="nav-item">
+                <a class="nav-link" href="#">How to use</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">Methodology</a>
+                </li>
+                -->
             </ul>
-        </div>
             
-        <input class="form-control py-2 border-right-0 border" type="search" placeholder="Enter natural language query" id="search-input">
-        <span class="input-group-append">
-            <button class="btn btn-outline-secondary border-left-0 border search-button" type="button">
-                <span class="spinner-border spinner-border-sm d-none"></span>
-                <i class="fa fa-search"></i>
-            </button>
-        </span>
+            <!--
+            <button class="btn btn-outline-primary override mx-2">Feedback</button>
+            -->
+            
+            <button id="feedback-link" class="btn btn-primary override mx-2">Feedback</button>
+            </div>
+        </nav>        
+    </div>
+
+    <div>
+        <h3 class="text-white">Understand the latest research data to stomp out SARS-CoV-2</h3>
+        <div class="input-group">
+            <div class="input-group-btn select-collection">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <span id="search_concept">Select a Collection</span> <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                <li>medRxiv</li>
+                <li>News</li>
+                </ul>
+            </div>
+                
+            <input class="form-control py-2 border-right-0 border" type="search" placeholder="Enter natural language query" id="search-input">
+            <span class="input-group-append">
+                <button class="btn btn-outline-secondary border-left-0 border search-button" type="button">
+                    <span class="spinner-border spinner-border-sm d-none"></span>
+                    <i class="fa fa-search"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+
+    <div>
+        <ul class="nav nav-pills refine-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link refine-link" id="concepts_link" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">
+                    Concepts
+                    <span class="badge float-right my-1 refine-badge" id="enriched_text_concepts_text_counter"></span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link refine-link" id="entities_link" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">
+                    Entities
+                    <span class="badge float-right my-1 refine-badge" id="enriched_text_entities_text_counter"></span>
+                </a>
+            </li>
+        </ul>
     </div>
 </div>
 
 <div class="container-fluid">
     
     <div class="row" >
-        <div class="col-sm-3 col-md-2 sidebar px-0">
-            <div class="sidebar-header">
-            Refine the Search
-            </div>
-            <ul class="nav nav-sidebar d-inline">
-                <li class="sidebar-menu">
-                    <a class="clearfix" href="#" id="concepts_link">
-                        <span>Concepts</span>
-                        <span class="badge float-right my-1" id="enriched_text_concepts_text_counter"></span>
-                    </a>
-                </li>
-                <li class="sidebar-menu">
-                    <a class="clearfix" href="#" id="entities_link">
-                        <span>Entities</span>
-                        <span class="badge float-right my-1" id="enriched_text_entities_text_counter"></span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="col-sm-9 col-md-10 px-0">
+        <div class="col-sm-9 col-md-12 px-0">
             <div class="container-fluid h-100">
                 <div class="row h-100">
-                    <div class="col-md-4 filter-col d-none">
+                    <div class="col-md-3 filter-col d-none">
                         <div class="filter-section" id="concepts_section">
-                            <span class="filter-label">Concepts</span>
                             <span class="ml-2"><a href="#">
                                 <i class="fa fa-question-circle filter-help"></i>
                             </a></span>
@@ -527,7 +562,6 @@
                         </div>
                         
                         <div class="filter-section" id="entities_section">
-                            <span class="filter-label">Entities</span>
                             <span class="ml-2"><a href="#">
                                 <i class="fa fa-question-circle filter-help"></i>
                             </a></span>
@@ -570,7 +604,7 @@
                             
                         </div>
                     </div>
-                    <div class="col-md-8 results-col px-0">
+                    <div class="col-md-9 results-col px-0">
                         <div id="popular-searches" class="container-fluid w-100 h-100">
                             <div class="row">
                                 <div class="col-md-6 px-0">
@@ -753,6 +787,11 @@
 </div>
 
 <script>
+var deactivateTabs = function() {
+    $("#concepts_link").removeClass("active");
+    $("#entities_link").removeClass("active");
+}
+
 var showFilters = function(show) {
     if (show) {
         $('.results-col').removeClass('col-md-12');
@@ -762,6 +801,8 @@ var showFilters = function(show) {
         $('.results-col').removeClass('col-md-8');
         $('.results-col').addClass('col-md-12');
         $('.filter-col').addClass('d-none');
+
+        deactivateTabs();
     }
 };
 showFilters(false);
@@ -805,7 +846,7 @@ var appendText = function(container, text) {
         showEntities();
         showFilters(true);
     }
-
+    
     if (container.find("span:contains('" + text + "')").length) {
         return;
     }
@@ -1254,11 +1295,15 @@ $("#entities_link").click(function() {
 var showConcepts = function() {
     $('#entities_section').hide();
     $('#concepts_section').show();
+    $("#concepts_link").addClass("active");
+    $("#entities_link").removeClass("active");
 }
 
 var showEntities = function() {
     $('#entities_section').show();
     $('#concepts_section').hide();
+    $("#concepts_link").removeClass("active");
+    $("#entities_link").addClass("active");
 }
 
 $(".select-collection .dropdown-menu li").on("click", function(event){
