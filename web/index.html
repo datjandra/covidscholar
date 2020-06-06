@@ -519,7 +519,7 @@
                 <div class="row h-100">
                     <div class="col-md-3 filter-col d-none">
                         <div class="filter-section" id="concepts_section">
-                            <span class="ml-2"><a href="#">
+                            <span class="ml-2"><a href="#" data-toggle="tooltip" title="High-level concepts that may not be mentioned in the text">
                                 <i class="fa fa-question-circle filter-help"></i>
                             </a></span>
                             <span class="float-right">
@@ -560,7 +560,7 @@
                         </div>
                         
                         <div class="filter-section" id="entities_section">
-                            <span class="ml-2"><a href="#">
+                            <span class="ml-2"><a href="#" data-toggle="tooltip" title="Names of people, facilities, and other types of entities mentioned in the text">
                                 <i class="fa fa-question-circle filter-help"></i>
                             </a></span>
                             <span class="float-right">
@@ -1033,14 +1033,30 @@ var findEntities = function(enrichedField, types) {
     return entityList;
 };
 
-var diseaseTypes = ["CauseOfDeath", "Disease", "DiseaseOrMedicalCondition", "InfectiousDisease", "RiskFactor", "DiseaseCause", "Symptom"];
-var getDiseases = function(enrichedTitle, enrichedText) {
-    var diseases = [];
-    diseases.push.apply(diseases, findEntities(enrichedTitle, diseaseTypes));
-    diseases.push.apply(diseases, findEntities(enrichedText, diseaseTypes));
+var findKeywords = function(enrichedField, matches) {
+    var keywordList = [];
+    if (enrichedField && enrichedField.keywords) {
+        keywords = enrichedField.keywords;
+        for (var i=0; i<keywords.length; i++) {
+            keyword = keywords[i];
+            for (var j=0; j<matches.length; j++) {
+                if (keyword.text.includes(matches[j])) {
+                    keywordList.push(keyword.text);
+                }
+            }
+        }
+    }    
+    return keywordList;
+};
+
+var facilityTypes = ["Facility"];
+var getFacilities = function(enrichedTitle, enrichedText) {
+    var facilities = [];
+    facilities.push.apply(facilities, findEntities(enrichedTitle, facilityTypes));
+    facilities.push.apply(facilities, findEntities(enrichedText, facilityTypes));
     
     var unique = [];
-    $.each(diseases, function(i, el){
+    $.each(facilities, function(i, el){
         if ($.inArray(el, unique) === -1) {
             unique.push(el);
         }    
@@ -1048,14 +1064,29 @@ var getDiseases = function(enrichedTitle, enrichedText) {
     return unique.join(', ');
 };
 
-var treatmentTypes = ["Drug"];
-var getTreatments = function(enrichedTitle, enrichedText) {
-    var treatments = [];
-    treatments.push.apply(treatments, findEntities(enrichedTitle, treatmentTypes));
-    treatments.push.apply(treatments, findEntities(enrichedText, treatmentTypes));
+var studyTypes = ["retrospective", "prospective", "case series", "literature review"];
+var getStudies = function(enrichedTitle, enrichedText) {
+    var studies = [];
+    studies.push.apply(studies, findKeywords(enrichedTitle, studyTypes));
+    studies.push.apply(studies, findKeywords(enrichedText, studyTypes));
     
     var unique = [];
-    $.each(treatments, function(i, el){
+    $.each(studies, function(i, el){
+        if ($.inArray(el, unique) === -1) {
+            unique.push(el);
+        }    
+    });
+    return unique.join(', ');
+};
+
+var materialTypes = ["stool", "nasopharyngeal", "urine", "blood"];
+var getMaterials = function(enrichedTitle, enrichedText) {
+    var materials = [];
+    materials.push.apply(materials, findKeywords(enrichedTitle, materialTypes));
+    materials.push.apply(materials, findKeywords(enrichedText, materialTypes));
+    
+    var unique = [];
+    $.each(materials, function(i, el){
         if ($.inArray(el, unique) === -1) {
             unique.push(el);
         }    
@@ -1066,8 +1097,9 @@ var getTreatments = function(enrichedTitle, enrichedText) {
 var showPassages = function(resultSet, passages) {
     $('#results-passages').removeClass('d-none');
     var tableData = [];
-    var hasDisease = false;
-    var hasTreatment = false;
+    var hasFacility = false;
+    var hasStudy = false;
+    var hasMaterial = false;
     for (var i=0; i<passages.length; i++) {
         passage = passages[i];
         doc = resultSet[passage.document_id];
@@ -1081,18 +1113,24 @@ var showPassages = function(resultSet, passages) {
             text: passage.passage_text
         };
         
-        var diseases = getDiseases(doc.enriched_title, doc.enriched_text)
-        if (diseases && diseases.length > 0) {
-            hasDisease = true;
+        var facilities = getFacilities(doc.enriched_title, doc.enriched_text)
+        if (facilities && facilities.length > 0) {
+            hasFacility = true;
         }
-        tableRow['diseases'] = diseases;
+        tableRow['facilities'] = facilities;
         
-        var treatments = getTreatments(doc.enriched_title, doc.enriched_text);
-        if (treatments && treatments.length > 0) {
-            hasTreatment = true;
+        var studies = getStudies(doc.enriched_title, doc.enriched_text);
+        if (studies && studies.length > 0) {
+            hasStudy = true;
         }
-        tableRow['treatments'] = treatments;
-        tableData.push(tableRow);    
+        tableRow['studies'] = studies;
+
+        var materials = getMaterials(doc.enriched_title, doc.enriched_text);
+        if (materials && materials.length > 0) {
+            hasMaterial = true;
+        }
+        tableRow['materials'] = materials;
+        tableData.push(tableRow);          
     }
 
     var carouselInner = $('#passages-carousel .carousel-inner');
@@ -1126,12 +1164,16 @@ var showPassages = function(resultSet, passages) {
         cardBody.append('<a href="' + doc.url + '" class="passage-title" target="_blank">' + doc.title + '</a>');
         cardBody.append('<p class="passage-text card card-body bg-light">' + doc.text + '</p>');
         
-        if (hasDisease && doc.diseases.length > 0) {
-            cardBody.append('<p><strong>Symptoms:</strong> ' + doc.diseases + '</p>');
+        if (hasFacility && doc.facilities.length > 0) {
+            cardBody.append('<p><strong>Facility:</strong> ' + doc.facilities + '</p>');
         }
         
-        if (hasTreatment && doc.treatments.length > 0) {
-            cardBody.append('<p><strong>Treatments:</strong> ' + doc.treatments + '</p>');
+        if (hasStudy && doc.studies.length > 0) {
+            cardBody.append('<p><strong>Study Types:</strong> ' + doc.studies + '</p>');
+        }
+        
+        if (hasMaterial && doc.materials.length > 0) {
+            cardBody.append('<p><strong>Materials:</strong> ' + doc.materials + '</p>');
         }
     }
 };
